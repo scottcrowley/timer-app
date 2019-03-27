@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94d4bf9ac7f4a933030e46a346ee2917",
+    "content-hash": "7c4dfc6d96b12faa81b7081fbf01183d",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1392,6 +1392,54 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "sc-laravel-presets/default-tailwindcss",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scottcrowley/default-laravel-tailwind-preset.git",
+                "reference": "21e19a3c3e9a960ee15ebf3db2e2b0db2807955f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scottcrowley/default-laravel-tailwind-preset/zipball/21e19a3c3e9a960ee15ebf3db2e2b0db2807955f",
+                "reference": "21e19a3c3e9a960ee15ebf3db2e2b0db2807955f",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^5.7"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SCLaravelFrontendPresets\\DefaultTailwindPreset\\DefaultTailwindPresetServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SCLaravelFrontendPresets\\DefaultTailwindPreset\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Scott Crowley",
+                    "email": "scott@scottcrowley.com"
+                }
+            ],
+            "description": "Laravel frontend preset for default setup and Tailwind CSS",
+            "keywords": [
+                "laravel",
+                "preset",
+                "tailwindcss"
+            ],
+            "time": "2019-03-27T22:35:10+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4395,7 +4443,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "sc-laravel-presets/default-tailwindcss": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
