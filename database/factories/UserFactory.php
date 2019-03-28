@@ -33,3 +33,17 @@ $factory->define(App\Client::class, function (Faker $faker) {
         'active' => true
     ];
 });
+
+$factory->define(App\Project::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name(),
+        'description' => $faker->sentence(),
+        'user_id' => function () {
+            return factory(App\User::class);
+        },
+        'client_id' => function () {
+            return factory(App\Client::class);
+        },
+        'active' => true
+    ];
+});

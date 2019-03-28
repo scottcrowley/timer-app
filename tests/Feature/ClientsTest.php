@@ -127,7 +127,6 @@ class ClientsTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_update_a_client()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         $client = createRaw('App\Client');

@@ -18,6 +18,11 @@ class ClientTest extends TestCase
 
         $this->post(route('clients.store'), $client)
             ->assertSessionHasErrors('name');
+
+        $client = createRaw('App\Client', ['name' => '']);
+
+        $this->post(route('clients.update', $client['id']), $client)
+            ->assertSessionHasErrors('name');
     }
 
     /** @test */
@@ -29,5 +34,17 @@ class ClientTest extends TestCase
 
         $this->post(route('clients.store'), $client)
             ->assertSessionHasErrors('user_id');
+    }
+
+    /** @test */
+    public function it_can_access_all_of_its_projects()
+    {
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+
+        create('App\Project', ['client_id' => $client->id], 5);
+
+        $this->assertCount(5, $client->projects);
     }
 }

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class Project extends Model
 {
     use ActiveStatus;
 
@@ -14,7 +14,7 @@ class Client extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'user_id', 'active'
+        'name', 'user_id', 'client_id', 'description', 'active'
     ];
 
     /**
@@ -27,12 +27,12 @@ class Client extends Model
     ];
 
     /**
-     * Get the projects associated with the client.
+     * Get the client belonging to the project.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function projects()
+    public function client()
     {
-        return $this->hasMany(Project::class);
+        return $this->belongsTo(Client::class);
     }
 }
