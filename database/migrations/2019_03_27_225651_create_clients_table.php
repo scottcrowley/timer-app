@@ -19,6 +19,11 @@ class CreateClientsTable extends Migration
             $table->string('name');
             $table->boolean('active')->default(true);
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

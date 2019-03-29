@@ -4,18 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Timer extends Model
 {
-    use ActiveStatus;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'client_id', 'description', 'active'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast to native types.
@@ -23,7 +19,10 @@ class Project extends Model
      * @var array
      */
     protected $casts = [
-        'active' => 'boolean'
+        'billable' => 'boolean',
+        'billed' => 'boolean',
+        'start' => 'datetime',
+        'end' => 'datetime',
     ];
 
     /**
@@ -31,20 +30,15 @@ class Project extends Model
      *
      * @var array
      */
-    protected $with = ['client'];
+    protected $with = ['project'];
 
     /**
-     * Get the client belonging to the project.
+     * Get the project belonging to the timer.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function client()
+    public function project()
     {
-        return $this->belongsTo(Client::class);
-    }
-
-    public function getUser()
-    {
-        return $this->client->user;
+        return $this->belongsTo(Project::class);
     }
 }

@@ -16,4 +16,16 @@ abstract class TestCase extends BaseTestCase
 
         return $this;
     }
+
+    protected function createProject($action = 'create', $attributes = [], $times = null, $user = null)
+    {
+        if (is_null($user)) {
+            $this->signIn();
+            $user = auth()->user();
+        }
+
+        $client = create('App\Client', ['user_id' => $user->id]);
+
+        return $action('App\Project', array_merge($attributes, ['client_id' => $client->id]), $times);
+    }
 }

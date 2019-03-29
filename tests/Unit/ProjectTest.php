@@ -26,17 +26,6 @@ class ProjectTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_valid_user_id()
-    {
-        $this->signIn();
-
-        $project = makeRaw('App\Project', ['user_id' => 8]);
-
-        $this->post(route('projects.store'), $project)
-            ->assertSessionHasErrors('user_id');
-    }
-
-    /** @test */
     public function it_requires_a_valid_client_id()
     {
         $this->signIn();
@@ -46,7 +35,9 @@ class ProjectTest extends TestCase
         $this->post(route('projects.store'), $project)
             ->assertSessionHasErrors('client_id');
 
-        $project = createRaw('App\Project', ['client_id' => 8]);
+        $project = createRaw('App\Project');
+
+        $project['client_id'] = 8;
 
         $this->post(route('projects.update', $project['id']), $project)
                 ->assertSessionHasErrors('client_id');
@@ -59,7 +50,7 @@ class ProjectTest extends TestCase
 
         $client = create('App\Client', ['user_id' => auth()->id()]);
 
-        $project = create('App\Project', ['user_id' => auth()->id(), 'client_id' => $client->id]);
+        $project = create('App\Project', ['client_id' => $client->id]);
 
         $projectClient = $project->client;
 

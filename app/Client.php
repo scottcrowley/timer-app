@@ -35,4 +35,14 @@ class Client extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    /**
+     * Get the user belonging to the client.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

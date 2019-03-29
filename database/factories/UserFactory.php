@@ -38,12 +38,22 @@ $factory->define(App\Project::class, function (Faker $faker) {
     return [
         'name' => $faker->name(),
         'description' => $faker->sentence(),
-        'user_id' => function () {
-            return factory(App\User::class);
-        },
         'client_id' => function () {
             return factory(App\Client::class);
         },
         'active' => true
+    ];
+});
+
+$factory->define(App\Timer::class, function (Faker $faker) {
+    return [
+        'description' => $faker->sentence(),
+        'project_id' => function () {
+            return factory(App\Project::class);
+        },
+        'start' => now()->subHours(3)->toDateTimeString(),
+        'end' => now()->toDateTimeString(),
+        'billable' => true,
+        'billed' => false
     ];
 });

@@ -40,4 +40,17 @@ Route::group([
     Route::get('/{project}', 'ProjectsController@show')->name('projects.show');
     Route::get('/{project}/edit', 'ProjectsController@edit')->name('projects.edit');
     Route::post('/{project}/edit', 'ProjectsController@update')->name('projects.update');
+    Route::get('/{project}/timers', 'TimersController@index')->name('timers.index');
+});
+
+Route::group([
+    'prefix' => 'timers',
+    'middleware' => 'auth'
+], function () {
+    // Route::get('/', 'TimersController@index')->name('timers.index');
+    // Route::post('/', 'TimersController@store')->name('timers.store');
+    // Route::get('/create', 'TimersController@create')->name('timers.create');
+    // Route::get('/{timer}', 'TimersController@show')->name('timers.show');
+    // Route::get('/{timer}/edit', 'TimersController@edit')->name('timers.edit');
+    // Route::post('/{timer}/edit', 'TimersController@update')->name('timers.update');
 });

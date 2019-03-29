@@ -14,7 +14,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::where('user_id', auth()->id())->get();
+        $projects = auth()->user()->projects;
 
         return view('projects.index', compact('projects'));
     }
@@ -40,7 +40,6 @@ class ProjectsController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'description' => 'nullable',
-            'user_id' => 'exists:users,id',
             'client_id' => 'exists:clients,id',
         ]);
 

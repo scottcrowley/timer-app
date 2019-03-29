@@ -12,8 +12,6 @@ class UserTest extends TestCase
     /** @test */
     public function it_can_access_all_its_clients()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn($user = create('App\User'));
 
         create('App\Client', ['user_id' => $user->id], 5);
@@ -21,5 +19,15 @@ class UserTest extends TestCase
         $clients = $user->clients;
 
         $this->assertCount(5, $clients);
+    }
+
+    /** @test */
+    public function it_can_access_all_its_projects_for_all_clients()
+    {
+        $this->createProject('create', [], 5);
+
+        $projects = auth()->user()->projects;
+
+        $this->assertCount(5, $projects);
     }
 }

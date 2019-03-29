@@ -36,8 +36,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Get the clients associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function clients()
     {
         return $this->hasMany(Client::class);
+    }
+
+    /**
+     * Get the all projects associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function projects()
+    {
+        return $this->hasManyThrough(Project::class, Client::class);
     }
 }

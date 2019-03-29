@@ -20,33 +20,27 @@ class ProjectsTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_view_all_their_projects()
     {
-        $this->withoutExceptionHandling();
-        $this->signIn();
-
-        $project = create('App\Project', ['user_id' => auth()->id()]);
+        $project = $this->createProject();
 
         $this->get(route('projects.index'))
             ->assertSee($project->name);
     }
 
     /** @test */
-    public function an_authenticated_user_may_not_view_projects_created_by_different_user()
+    public function an_authenticated_user_may_not_view_projects_created_by_different_users()
     {
-        $this->signIn($john = create('App\User', ['name' => 'John Doe']));
+        $this->signIn();
 
-        $jane = create('App\User', ['name' => 'Jane Doe']);
-        $project = createRaw('App\Project', ['user_id' => $jane->id]);
+        $janesProject = create('App\Project');
 
         $this->get(route('projects.index'))
-            ->assertDontSee($project['name']);
+            ->assertDontSee($janesProject->name);
     }
 
     /** @test */
     public function an_authenticated_user_can_add_a_new_project()
     {
-        $this->signIn();
-
-        $project = makeRaw('App\Project', ['user_id' => auth()->id()]);
+        $project = $this->createProject('makeRaw');
 
         $this->post(route('projects.store'), $project)
             ->assertRedirect(route('projects.index'));
@@ -55,11 +49,23 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
-    public function a_project_can_have_active_status_toggled()
+    public function an_authenticated_user_may_only_add_projects_to_their_own_clients()
     {
         $this->signIn();
 
-        $project = create('App\Project');
+        $jane = create('App\User');
+
+        $janesProject = $this->createProject('create', [], null, $jane);
+
+        $johnsProject = makeRaw('App\Project', ['client_id' => $janesProject->client_id]);
+
+        dd();
+    }
+
+    /** @test */
+    public function a_project_can_have_active_status_toggled()
+    {
+        $project = $this->createProject();
 
         $this->assertTrue($project->isActive());
 
@@ -98,9 +104,7 @@ class ProjectsTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_view_the_edit_project_page()
     {
-        $this->signIn();
-
-        $project = create('App\Project');
+        $project = $this->createProject();
 
         $this->get(route('projects.edit', $project->id))
             ->assertSee('Edit')
@@ -128,16 +132,14 @@ class ProjectsTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_update_a_project()
     {
-        $this->signIn();
-
-        $project = createRaw('App\Project');
+        $project = $this->createProject('createRaw');
 
         $project['name'] = 'Some new name';
 
         $this->post(route('projects.update', $project['id']), $project)
             ->assertRedirect(route('projects.show', $project['id']));
 
-        $project = Project::find($project['id']);
+        $project = Project::without('client')->find($project['id']);
 
         $this->assertDatabaseHas('projects', $project->toArray());
     }
