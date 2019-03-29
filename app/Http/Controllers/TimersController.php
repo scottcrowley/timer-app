@@ -15,6 +15,8 @@ class TimersController extends Controller
      */
     public function index(Project $project)
     {
+        $this->authorize('create', Timer::class);
+
         $timers = Timer::where('project_id', $project->id)->orderBy('end')->get();
 
         return view('timers.index', compact('timers', 'project'));
