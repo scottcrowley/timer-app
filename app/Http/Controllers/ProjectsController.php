@@ -14,6 +14,8 @@ class ProjectsController extends Controller
      */
     public function index()
     {
+        $this->authorize('create', Project::class);
+
         $projects = auth()->user()->projects;
 
         return view('projects.index', compact('projects'));
@@ -26,6 +28,8 @@ class ProjectsController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Project::class);
+
         return view('projects.create');
     }
 
@@ -37,6 +41,8 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Project::class);
+
         $data = $request->validate([
             'name' => 'required',
             'description' => 'nullable',
@@ -51,7 +57,7 @@ class ProjectsController extends Controller
             return response($project, 201);
         }
 
-        return redirect(route('projects.index'));
+        return redirect(route('projects.index', $project->client_id));
     }
 
     /**
@@ -62,6 +68,8 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
+        $this->authorize('update', $project);
+
         return view('projects.show', compact('project'));
     }
 
@@ -73,6 +81,8 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
+        $this->authorize('update', $project);
+
         return view('projects.edit', compact('project'));
     }
 
@@ -85,6 +95,8 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $this->authorize('update', $project);
+
         $data = $request->validate([
             'name' => 'required',
             'description' => 'nullable',

@@ -13,8 +13,21 @@ class ProjectsTest extends TestCase
     /** @test */
     public function guests_are_not_able_to_view_projects()
     {
-        $this->get(route('projects.index'))
+        $this->get(route('projects.index', 1))
             ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_only_view_all_their_projects_if_its_their_client()
+    {
+        $this->signIn();
+
+        $jane = create('App\User');
+
+        $janesProject = $this->createProject('create', [], null, $jane);
+
+        $this->get(route('projects.index', $janesProject->client_id))
+            ->assertStatus(403);
     }
 
     /** @test */
@@ -22,7 +35,7 @@ class ProjectsTest extends TestCase
     {
         $project = $this->createProject();
 
-        $this->get(route('projects.index'))
+        $this->get(route('projects.index', $project->client_id))
             ->assertSee($project->name);
     }
 
@@ -33,7 +46,7 @@ class ProjectsTest extends TestCase
 
         $janesProject = create('App\Project');
 
-        $this->get(route('projects.index'))
+        $this->get(route('projects.index', $janesProject->client_id))
             ->assertDontSee($janesProject->name);
     }
 
@@ -42,8 +55,8 @@ class ProjectsTest extends TestCase
     {
         $project = $this->createProject('makeRaw');
 
-        $this->post(route('projects.store'), $project)
-            ->assertRedirect(route('projects.index'));
+        $this->post(route('projects.store', $project['client_id']), $project)
+            ->assertRedirect(route('projects.index', $project['client_id']));
 
         $this->assertDatabaseHas('projects', $project);
     }
@@ -59,7 +72,8 @@ class ProjectsTest extends TestCase
 
         $johnsProject = makeRaw('App\Project', ['client_id' => $janesProject->client_id]);
 
-        dd();
+        $this->post(route('projects.store', $janesProject->client_id), $johnsProject)
+            ->assertStatus(403);
     }
 
     /** @test */
@@ -81,16 +95,29 @@ class ProjectsTest extends TestCase
     /** @test */
     public function a_guest_cannot_view_the_create_project_page()
     {
-        $this->get(route('projects.create'))
+        $this->get(route('projects.create', 1))
             ->assertRedirect(route('login'));
     }
 
     /** @test */
-    public function an_authenticated_user_can_view_the_create_project_page()
+    public function an_authenticated_user_can_only_view_the_create_project_page_if_its_their_client()
     {
         $this->signIn();
 
-        $this->get(route('projects.create'))
+        $janesClient = create('App\Client');
+
+        $this->get(route('projects.create', $janesClient->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_view_the_create_project_page_for_their_client()
+    {
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+
+        $this->get(route('projects.create', $client->id))
             ->assertSee('New Project');
     }
 
@@ -99,6 +126,19 @@ class ProjectsTest extends TestCase
     {
         $this->get(route('projects.edit', 1))
             ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_only_view_the_edit_project_page_if_its_their_client()
+    {
+        $this->signIn();
+
+        $jane = create('App\User');
+
+        $janesProject = $this->createProject('create', [], null, $jane);
+
+        $this->get(route('projects.edit', $janesProject->id))
+            ->assertStatus(403);
     }
 
     /** @test */
@@ -119,14 +159,40 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_view_the_project_show_page()
+    public function an_authenticated_user_can_only_view_the_project_show_page_if_its_their_client()
     {
         $this->signIn();
 
-        $project = create('App\Project');
+        $jane = create('App\User');
+
+        $janesProject = $this->createProject('create', [], null, $jane);
+
+        $this->get(route('projects.show', $janesProject->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_view_the_project_show_page()
+    {
+        $project = $this->createProject();
 
         $this->get(route('projects.show', $project->id))
             ->assertSee($project->name);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_only_update_a_project_if_its_their_client()
+    {
+        $this->signIn();
+
+        $jane = create('App\User');
+
+        $janesProject = $this->createProject('createRaw', [], null, $jane);
+
+        $janesProject['name'] = 'Some new name';
+
+        $this->post(route('projects.update', $janesProject['id']), $janesProject)
+            ->assertStatus(403);
     }
 
     /** @test */

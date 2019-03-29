@@ -6,7 +6,7 @@
         <div class="flex font-medium text-lg text-primary-darker bg-primary p-3 rounded-t">
             <div>Projects</div>
             <div class="ml-auto">
-                <a href="{{ route('projects.create') }}" class="btn is-header-btn">Add New</a>
+                <a href="{{ route('projects.create', request()->route('client')) }}" class="btn is-header-btn">Add New</a>
             </div>
         </div>
         <div class="bg-white p-3 pb-6 rounded-b">

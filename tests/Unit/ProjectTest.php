@@ -12,14 +12,12 @@ class ProjectTest extends TestCase
     /** @test */
     public function it_requires_a_name()
     {
-        $this->signIn();
+        $project = $this->createProject('makeRaw', ['name' => '']);
 
-        $project = makeRaw('App\Project', ['name' => '']);
-
-        $this->post(route('projects.store'), $project)
+        $this->post(route('projects.store', $project['client_id']), $project)
             ->assertSessionHasErrors('name');
 
-        $project = createRaw('App\Project', ['name' => '']);
+        $project = $this->createProject('createRaw', ['name' => '']);
 
         $this->post(route('projects.update', $project['id']), $project)
             ->assertSessionHasErrors('name');
@@ -32,10 +30,10 @@ class ProjectTest extends TestCase
 
         $project = makeRaw('App\Project', ['client_id' => 8]);
 
-        $this->post(route('projects.store'), $project)
-            ->assertSessionHasErrors('client_id');
+        $this->post(route('projects.store', $project['client_id']), $project)
+            ->assertStatus(404);
 
-        $project = createRaw('App\Project');
+        $project = $this->createProject('createRaw', [], null, auth()->user());
 
         $project['client_id'] = 8;
 
