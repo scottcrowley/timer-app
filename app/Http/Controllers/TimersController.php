@@ -11,6 +11,7 @@ class TimersController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
     public function index(Project $project)
@@ -25,11 +26,14 @@ class TimersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Project $project)
     {
-        //
+        $this->authorize('create', Timer::class);
+
+        return view('timers.create', compact('project'));
     }
 
     /**
@@ -40,7 +44,27 @@ class TimersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Timer::class);
+
+        $data = $request->validate([
+            'description' => 'required',
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
+            'billable' => 'required|boolean',
+            'billed' => 'required|boolean'
+        ]);
+
+        $data['project_id'] = $request->route('project');
+
+        $timer = Timer::create($data);
+
+        session()->flash('flash', ['message' => 'The Timer added successfully!', 'level' => 'success']);
+
+        if ($request->expectsJson()) {
+            return response($timer, 201);
+        }
+
+        return redirect(route('timers.index', $timer->project_id));
     }
 
     /**

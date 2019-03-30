@@ -19,7 +19,8 @@ class ProjectPolicy
      */
     public function create(User $user)
     {
-        $client = Client::findOrFail(request()->route('client'));
+        $requestClient = request()->route('client');
+        $client = ($requestClient instanceof Client) ? $requestClient : Client::findOrFail($requestClient);
 
         return ($client->user_id == $user->id);
     }

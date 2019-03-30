@@ -43,8 +43,18 @@ class Project extends Model
         return $this->belongsTo(Client::class);
     }
 
+    /**
+     * Gets the User associated with the Project's Client
+     *
+     * @return App\User
+     */
     public function getUser()
     {
         return $this->client->user;
+    }
+
+    public function addTimer()
+    {
+        //
     }
 }

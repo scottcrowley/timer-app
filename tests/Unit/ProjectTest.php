@@ -54,4 +54,18 @@ class ProjectTest extends TestCase
 
         $this->assertEquals($projectClient->name, $client->name);
     }
+
+    // /** @test */
+    // public function it_can_access_details_about_its_timers()
+    // {
+    //     $this->signIn();
+
+    //     $client = create('App\Client', ['user_id' => auth()->id()]);
+
+    //     $project = create('App\Project', ['client_id' => $client->id]);
+
+    //     $projectClient = $project->client;
+
+    //     $this->assertEquals($projectClient->name, $client->name);
+    // }
 }

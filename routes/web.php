@@ -44,6 +44,8 @@ Route::group([
     Route::get('/{project}/edit', 'ProjectsController@edit')->name('projects.edit');
     Route::post('/{project}/edit', 'ProjectsController@update')->name('projects.update');
     Route::get('/{project}/timers', 'TimersController@index')->name('timers.index');
+    Route::get('/{project}/timers/create', 'TimersController@create')->name('timers.create');
+    Route::post('/{project}/timers', 'TimersController@store')->name('timers.store');
 });
 
 Route::group([

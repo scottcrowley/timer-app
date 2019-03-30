@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\User;
 use App\Timer;
+use App\Project;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TimerPolicy
@@ -18,7 +19,8 @@ class TimerPolicy
      */
     public function create(User $user)
     {
-        $project = request()->route('project');
+        $requestProject = request()->route('project');
+        $project = ($requestProject instanceof Project) ? $requestProject : Project::findOrFail($requestProject);
 
         return ($project->client->user_id == $user->id);
     }
