@@ -75,7 +75,9 @@ class TimersController extends Controller
      */
     public function show(Timer $timer)
     {
-        //
+        $this->authorize('update', $timer);
+
+        return view('timers.show', compact('timer'));
     }
 
     /**
@@ -86,7 +88,9 @@ class TimersController extends Controller
      */
     public function edit(Timer $timer)
     {
-        //
+        $this->authorize('update', $timer);
+
+        return view('timers.edit', compact('timer'));
     }
 
     /**
@@ -98,7 +102,25 @@ class TimersController extends Controller
      */
     public function update(Request $request, Timer $timer)
     {
-        //
+        $this->authorize('update', $timer);
+
+        $timer->update(
+            $request->validate([
+                'description' => 'required',
+                'start' => 'required|date',
+                'end' => 'required|date|after:start',
+                'billable' => 'required|boolean',
+                'billed' => 'required|boolean'
+            ])
+        );
+
+        session()->flash('flash', ['message' => 'The Timer updated successfully!', 'level' => 'success']);
+
+        if ($request->expectsJson()) {
+            return response($timer, 202);
+        }
+
+        return redirect(route('timers.show', $timer->id));
     }
 
     /**
@@ -109,6 +131,16 @@ class TimersController extends Controller
      */
     public function destroy(Timer $timer)
     {
-        //
+        $this->authorize('update', $timer);
+
+        $timer->delete();
+
+        session()->flash('flash', 'The Timer was deleted successfully!');
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect(route('timers.index', $timer->project_id));
     }
 }

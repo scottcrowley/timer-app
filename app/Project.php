@@ -52,9 +52,4 @@ class Project extends Model
     {
         return $this->client->user;
     }
-
-    public function addTimer()
-    {
-        //
-    }
 }

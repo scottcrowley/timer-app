@@ -25,7 +25,7 @@ class ClientsTest extends TestCase
         $client = create('App\Client', ['user_id' => auth()->id()]);
 
         $this->get(route('clients.index'))
-            ->assertSee($client->name);
+            ->assertSee(e($client->name));
     }
 
     /** @test */
@@ -37,7 +37,7 @@ class ClientsTest extends TestCase
         $client = createRaw('App\Client', ['user_id' => $jane->id]);
 
         $this->get(route('clients.index'))
-            ->assertDontSee($client['name']);
+            ->assertDontSee(e($client['name']));
     }
 
     /** @test */
@@ -95,15 +95,26 @@ class ClientsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_view_the_edit_client_page()
+    public function an_authenticated_user_may_only_view_the_edit_client_page_if_its_theirs()
     {
         $this->signIn();
 
         $client = create('App\Client');
 
         $this->get(route('clients.edit', $client->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_view_the_edit_client_page()
+    {
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+
+        $this->get(route('clients.edit', $client->id))
             ->assertSee('Edit')
-            ->assertSee($client->name);
+            ->assertSee(e($client->name));
     }
 
     /** @test */
@@ -114,22 +125,44 @@ class ClientsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_view_the_client_show_page()
+    public function an_authenticated_user_may_only_view_the_client_show_page_if_its_theirs()
     {
         $this->signIn();
 
         $client = create('App\Client');
 
         $this->get(route('clients.show', $client->id))
-            ->assertSee($client->name);
+            ->assertStatus(403);
     }
 
     /** @test */
-    public function an_authenticated_user_can_update_a_client()
+    public function an_authenticated_user_can_view_their_client_show_page()
+    {
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+
+        $this->get(route('clients.show', $client->id))
+            ->assertSee(e($client->name));
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_only_update_a_client_if_its_theirs()
     {
         $this->signIn();
 
         $client = createRaw('App\Client');
+
+        $this->post(route('clients.update', $client['id']), $client)
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_update_their_client()
+    {
+        $this->signIn();
+
+        $client = createRaw('App\Client', ['user_id' => auth()->id()]);
 
         $client['name'] = 'Some new name';
 
@@ -139,5 +172,40 @@ class ClientsTest extends TestCase
         $client = Client::find($client['id']);
 
         $this->assertDatabaseHas('clients', $client->toArray());
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_only_delete_a_client_if_its_theirs()
+    {
+        $this->signIn();
+
+        $client = createRaw('App\Client');
+
+        $this->delete(route('clients.delete', $client['id']))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_delete_their_client()
+    {
+        $this->signIn();
+
+        $client = createRaw('App\Client', ['user_id' => auth()->id()]);
+
+        $this->delete(route('clients.delete', $client['id']))
+            ->assertRedirect(route('clients.index'));
+
+        $this->assertDatabaseMissing('clients', $client);
+    }
+
+    /** @test */
+    public function all_related_projects_and_timers_are_removed_when_a_client_is_deleted()
+    {
+        $timer = $this->createTimer();
+
+        $this->delete(route('clients.delete', $timer->getClient()->id));
+
+        $this->assertDatabaseMissing('projects', ['id' => $timer->project->id]);
+        $this->assertDatabaseMissing('timers', ['id' => $timer->id]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Project;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -22,9 +21,7 @@ class ProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $jane = create('App\User');
-
-        $janesProject = $this->createProject('create', [], null, $jane);
+        $janesProject = $this->createProject('create', [], null, create('App\User'));
 
         $this->get(route('projects.index', $janesProject->client_id))
             ->assertStatus(403);
@@ -36,7 +33,7 @@ class ProjectsTest extends TestCase
         $project = $this->createProject();
 
         $this->get(route('projects.index', $project->client_id))
-            ->assertSee($project->name);
+            ->assertSee(e($project->name));
     }
 
     /** @test */
@@ -44,10 +41,23 @@ class ProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $janesProject = create('App\Project');
+        $janesProject = $this->createProject('create', [], null, create('App\User'));
 
         $this->get(route('projects.index', $janesProject->client_id))
-            ->assertDontSee($janesProject->name);
+            ->assertDontSee(e($janesProject->name));
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_only_add_projects_to_their_own_clients()
+    {
+        $this->signIn();
+
+        $janesProject = $this->createProject('create', [], null, create('App\User'));
+
+        $johnsProject = makeRaw('App\Project', ['client_id' => $janesProject->client_id]);
+
+        $this->post(route('projects.store', $janesProject->client_id), $johnsProject)
+            ->assertStatus(403);
     }
 
     /** @test */
@@ -59,21 +69,6 @@ class ProjectsTest extends TestCase
             ->assertRedirect(route('projects.index', $project['client_id']));
 
         $this->assertDatabaseHas('projects', $project);
-    }
-
-    /** @test */
-    public function an_authenticated_user_may_only_add_projects_to_their_own_clients()
-    {
-        $this->signIn();
-
-        $jane = create('App\User');
-
-        $janesProject = $this->createProject('create', [], null, $jane);
-
-        $johnsProject = makeRaw('App\Project', ['client_id' => $janesProject->client_id]);
-
-        $this->post(route('projects.store', $janesProject->client_id), $johnsProject)
-            ->assertStatus(403);
     }
 
     /** @test */
@@ -133,9 +128,7 @@ class ProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $jane = create('App\User');
-
-        $janesProject = $this->createProject('create', [], null, $jane);
+        $janesProject = $this->createProject('create', [], null, create('App\User'));
 
         $this->get(route('projects.edit', $janesProject->id))
             ->assertStatus(403);
@@ -148,7 +141,7 @@ class ProjectsTest extends TestCase
 
         $this->get(route('projects.edit', $project->id))
             ->assertSee('Edit')
-            ->assertSee($project->name);
+            ->assertSee(e($project->name));
     }
 
     /** @test */
@@ -163,9 +156,7 @@ class ProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $jane = create('App\User');
-
-        $janesProject = $this->createProject('create', [], null, $jane);
+        $janesProject = $this->createProject('create', [], null, create('App\User'));
 
         $this->get(route('projects.show', $janesProject->id))
             ->assertStatus(403);
@@ -177,7 +168,7 @@ class ProjectsTest extends TestCase
         $project = $this->createProject();
 
         $this->get(route('projects.show', $project->id))
-            ->assertSee($project->name);
+            ->assertSee(e($project->name));
     }
 
     /** @test */
@@ -185,11 +176,7 @@ class ProjectsTest extends TestCase
     {
         $this->signIn();
 
-        $jane = create('App\User');
-
-        $janesProject = $this->createProject('createRaw', [], null, $jane);
-
-        $janesProject['name'] = 'Some new name';
+        $janesProject = $this->createProject('createRaw', [], null, create('App\User'));
 
         $this->post(route('projects.update', $janesProject['id']), $janesProject)
             ->assertStatus(403);
@@ -205,8 +192,38 @@ class ProjectsTest extends TestCase
         $this->post(route('projects.update', $project['id']), $project)
             ->assertRedirect(route('projects.show', $project['id']));
 
-        $project = Project::without('client')->find($project['id']);
+        $this->assertDatabaseHas('projects', ['name' => 'Some new name']);
+    }
 
-        $this->assertDatabaseHas('projects', $project->toArray());
+    /** @test */
+    public function an_authenticated_user_may_only_delete_a_project_if_its_their_client()
+    {
+        $this->signIn();
+
+        $project = $this->createProject('create', [], null, create('App\User'));
+
+        $this->delete(route('projects.delete', $project->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_delete_a_project_if_its_their_client()
+    {
+        $project = $this->createProject();
+
+        $this->delete(route('projects.delete', $project->id))
+            ->assertRedirect(route('projects.index', $project->client_id));
+
+        $this->assertDatabaseMissing('projects', ['id' => $project->id]);
+    }
+
+    /** @test */
+    public function all_related_timers_are_removed_when_a_project_is_deleted()
+    {
+        $timer = $this->createTimer();
+
+        $this->delete(route('projects.delete', $timer->project_id));
+
+        $this->assertDatabaseMissing('timers', ['id' => $timer->id]);
     }
 }

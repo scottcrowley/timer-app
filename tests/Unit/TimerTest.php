@@ -12,86 +12,88 @@ class TimerTest extends TestCase
     /** @test */
     public function it_can_access_details_about_its_project()
     {
-        $project = $this->createProject();
+        $timer = $this->createTimer();
 
-        $timer = create('App\Timer', ['project_id' => $project->id]);
+        $this->assertInstanceOf(\App\Project::class, $timer->project);
+    }
 
-        $this->assertEquals($project->name, $timer->project->name);
+    /** @test */
+    public function it_can_access_details_about_its_projects_client()
+    {
+        $timer = $this->createTimer();
+
+        $this->assertInstanceOf(\App\Client::class, $timer->getClient());
+    }
+
+    /** @test */
+    public function it_can_access_details_about_its_user()
+    {
+        $timer = $this->createTimer();
+
+        $this->assertInstanceOf(\App\User::class, $timer->getUser());
     }
 
     /** @test */
     public function it_requires_a_description()
     {
-        $project = $this->createProject();
+        $timer = $this->createTimer('makeRaw', ['description' => '']);
 
-        $timer = makeRaw('App\Timer', ['project_id' => $project->id, 'description' => '']);
-
-        $this->post(route('timers.store', $project->id), $timer)
+        $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('description');
     }
 
     /** @test */
     public function it_requires_a_valid_start_date()
     {
-        $project = $this->createProject();
+        $timer = $this->createTimer('makeRaw', ['start' => '']);
 
-        $timer = makeRaw('App\Timer', ['project_id' => $project->id, 'start' => '']);
-
-        $this->post(route('timers.store', $project->id), $timer)
+        $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('start');
     }
 
     /** @test */
     public function it_requires_a_valid_end_date()
     {
-        $project = $this->createProject();
+        $timer = $this->createTimer('makeRaw', ['end' => '']);
 
-        $timer = makeRaw('App\Timer', ['project_id' => $project->id, 'end' => '']);
-
-        $this->post(route('timers.store', $project->id), $timer)
+        $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('end');
     }
 
     /** @test */
     public function it_requires_the_end_date_to_be_later_than_the_start_date()
     {
-        $project = $this->createProject();
+        $timer = $this->createTimer('makeRaw', ['start' => now(), 'end' => now()->subHours(1)]);
 
-        $timer = makeRaw('App\Timer', ['project_id' => $project->id, 'start' => now(), 'end' => now()->subHours(1)]);
-
-        $this->post(route('timers.store', $project->id), $timer)
+        $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('end');
     }
 
     /** @test */
     public function it_requires_a_billable_boolean()
     {
-        $project = $this->createProject();
+        $timer = $this->createTimer('makeRaw', ['billable' => '']);
 
-        $timer = makeRaw('App\Timer', ['project_id' => $project->id, 'billable' => '']);
-
-        $this->post(route('timers.store', $project->id), $timer)
+        $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('billable');
 
         $timer['billable'] = 6;
 
-        $this->post(route('timers.store', $project->id), $timer)
+        $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('billable');
     }
 
     /** @test */
     public function it_requires_a_billed_boolean()
     {
-        $project = $this->createProject();
+        $timer = $this->createTimer('makeRaw', ['billed' => '']);
 
-        $timer = makeRaw('App\Timer', ['project_id' => $project->id, 'billed' => '']);
-
-        $this->post(route('timers.store', $project->id), $timer)
+        $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('billed');
 
         $timer['billed'] = 6;
 
-        $this->post(route('timers.store', $project->id), $timer)
+        $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('billed');
     }
 }

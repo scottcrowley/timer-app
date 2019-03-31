@@ -43,13 +43,13 @@ class ProjectsController extends Controller
     {
         $this->authorize('create', Project::class);
 
-        $data = $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'client_id' => 'exists:clients,id',
-        ]);
-
-        $project = Project::create($data);
+        $project = Project::create(
+            $request->validate([
+                'name' => 'required',
+                'description' => 'nullable',
+                'client_id' => 'exists:clients,id',
+            ])
+        );
 
         session()->flash('flash', ['message' => 'The Project added successfully!', 'level' => 'success']);
 
@@ -97,14 +97,14 @@ class ProjectsController extends Controller
     {
         $this->authorize('update', $project);
 
-        $data = $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'client_id' => 'exists:clients,id',
-            'active' => 'boolean'
-        ]);
-
-        $response = $project->update($data);
+        $response = $project->update(
+            $request->validate([
+                'name' => 'required',
+                'description' => 'nullable',
+                'client_id' => 'exists:clients,id',
+                'active' => 'boolean'
+            ])
+        );
 
         session()->flash('flash', ['message' => 'The Project updated successfully!', 'level' => 'success']);
 
@@ -123,6 +123,16 @@ class ProjectsController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $this->authorize('update', $project);
+
+        $project->delete();
+
+        session()->flash('flash', 'The Project was deleted successfully!');
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect(route('projects.index', $project->client_id));
     }
 }

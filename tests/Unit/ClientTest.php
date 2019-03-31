@@ -14,12 +14,12 @@ class ClientTest extends TestCase
     {
         $this->signIn();
 
-        $client = makeRaw('App\Client', ['name' => '']);
+        $client = makeRaw('App\Client', ['user_id' => auth()->id(), 'name' => '']);
 
         $this->post(route('clients.store'), $client)
             ->assertSessionHasErrors('name');
 
-        $client = createRaw('App\Client', ['name' => '']);
+        $client = createRaw('App\Client', ['user_id' => auth()->id(), 'name' => '']);
 
         $this->post(route('clients.update', $client['id']), $client)
             ->assertSessionHasErrors('name');

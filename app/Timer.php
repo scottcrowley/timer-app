@@ -41,4 +41,24 @@ class Timer extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    /**
+     * Gets the Client associated with the Timer Project
+     *
+     * @return App\Client
+     */
+    public function getClient()
+    {
+        return $this->project->client;
+    }
+
+    /**
+     * Gets the User associated with the Timer Project Client
+     *
+     * @return App\User
+     */
+    public function getUser()
+    {
+        return $this->project->client->user;
+    }
 }

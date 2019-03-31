@@ -15,7 +15,6 @@ class ClientsController extends Controller
     public function index()
     {
         $clients = Client::where('user_id', auth()->id())->get();
-        // $clients = Client::all();
 
         if (request()->expectsJson()) {
             return response($clients);
@@ -66,6 +65,8 @@ class ClientsController extends Controller
      */
     public function show(Client $client)
     {
+        $this->authorize('update', $client);
+
         return view('clients.show', compact('client'));
     }
 
@@ -77,6 +78,8 @@ class ClientsController extends Controller
      */
     public function edit(Client $client)
     {
+        $this->authorize('update', $client);
+
         return view('clients.edit', compact('client'));
     }
 
@@ -89,6 +92,8 @@ class ClientsController extends Controller
      */
     public function update(Request $request, Client $client)
     {
+        $this->authorize('update', $client);
+
         $data = $request->validate([
             'name' => 'required',
             'active' => 'boolean'
@@ -113,6 +118,16 @@ class ClientsController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $this->authorize('update', $client);
+
+        $client->delete();
+
+        session()->flash('flash', 'The Client was deleted successfully!');
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect(route('clients.index'));
     }
 }

@@ -10,6 +10,14 @@ class ProjectTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function it_can_access_details_about_its_client()
+    {
+        $project = $this->createProject();
+
+        $this->assertInstanceOf(\App\Client::class, $project->client);
+    }
+
+    /** @test */
     public function it_requires_a_name()
     {
         $project = $this->createProject('makeRaw', ['name' => '']);
@@ -40,32 +48,4 @@ class ProjectTest extends TestCase
         $this->post(route('projects.update', $project['id']), $project)
                 ->assertSessionHasErrors('client_id');
     }
-
-    /** @test */
-    public function it_can_access_details_about_its_client()
-    {
-        $this->signIn();
-
-        $client = create('App\Client', ['user_id' => auth()->id()]);
-
-        $project = create('App\Project', ['client_id' => $client->id]);
-
-        $projectClient = $project->client;
-
-        $this->assertEquals($projectClient->name, $client->name);
-    }
-
-    // /** @test */
-    // public function it_can_access_details_about_its_timers()
-    // {
-    //     $this->signIn();
-
-    //     $client = create('App\Client', ['user_id' => auth()->id()]);
-
-    //     $project = create('App\Project', ['client_id' => $client->id]);
-
-    //     $projectClient = $project->client;
-
-    //     $this->assertEquals($projectClient->name, $client->name);
-    // }
 }

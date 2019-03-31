@@ -30,4 +30,13 @@ abstract class TestCase extends BaseTestCase
 
         return $action('App\Project', array_merge($attributes, ['client_id' => $client->id]), $times);
     }
+
+    protected function createTimer($action = 'create', $attributes = [], $times = null, $user = null, $client = null, $project = null)
+    {
+        if (is_null($project)) {
+            $project = $this->createProject('create', [], null, $user, $client);
+        }
+
+        return $action('App\Timer', array_merge($attributes, ['project_id' => $project->id]), $times);
+    }
 }

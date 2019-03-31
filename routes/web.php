@@ -28,6 +28,7 @@ Route::group([
     Route::get('/{client}', 'ClientsController@show')->name('clients.show');
     Route::get('/{client}/edit', 'ClientsController@edit')->name('clients.edit');
     Route::post('/{client}/edit', 'ClientsController@update')->name('clients.update');
+    Route::delete('/{client}', 'ClientsController@destroy')->name('clients.delete');
     Route::get('/{client}/projects/', 'ProjectsController@index')->name('projects.index');
     Route::post('/{client}/projects/', 'ProjectsController@store')->name('projects.store');
     Route::get('/{client}/projects/create', 'ProjectsController@create')->name('projects.create');
@@ -37,25 +38,21 @@ Route::group([
     'prefix' => 'projects',
     'middleware' => 'auth'
 ], function () {
-    // Route::get('/', 'ProjectsController@index')->name('projects.index');
-    // Route::post('/', 'ProjectsController@store')->name('projects.store');
-    // Route::get('/create', 'ProjectsController@create')->name('projects.create');
     Route::get('/{project}', 'ProjectsController@show')->name('projects.show');
+    Route::delete('/{project}', 'ProjectsController@destroy')->name('projects.delete');
     Route::get('/{project}/edit', 'ProjectsController@edit')->name('projects.edit');
     Route::post('/{project}/edit', 'ProjectsController@update')->name('projects.update');
     Route::get('/{project}/timers', 'TimersController@index')->name('timers.index');
-    Route::get('/{project}/timers/create', 'TimersController@create')->name('timers.create');
     Route::post('/{project}/timers', 'TimersController@store')->name('timers.store');
+    Route::get('/{project}/timers/create', 'TimersController@create')->name('timers.create');
 });
 
 Route::group([
     'prefix' => 'timers',
     'middleware' => 'auth'
 ], function () {
-    // Route::get('/', 'TimersController@index')->name('timers.index');
-    // Route::post('/', 'TimersController@store')->name('timers.store');
-    // Route::get('/create', 'TimersController@create')->name('timers.create');
-    // Route::get('/{timer}', 'TimersController@show')->name('timers.show');
-    // Route::get('/{timer}/edit', 'TimersController@edit')->name('timers.edit');
-    // Route::post('/{timer}/edit', 'TimersController@update')->name('timers.update');
+    Route::get('/{timer}', 'TimersController@show')->name('timers.show');
+    Route::delete('/{timer}', 'TimersController@destroy')->name('timers.delete');
+    Route::get('/{timer}/edit', 'TimersController@edit')->name('timers.edit');
+    Route::post('/{timer}/edit', 'TimersController@update')->name('timers.update');
 });
