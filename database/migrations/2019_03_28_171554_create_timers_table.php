@@ -15,7 +15,7 @@ class CreateTimersTable extends Migration
     {
         Schema::create('timers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('project_id')->index();
+            $table->bigInteger('project_id')->unsigned()->index();
             $table->string('description');
             $table->dateTime('start');
             $table->dateTime('end');
