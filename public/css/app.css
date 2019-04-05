@@ -8040,6 +8040,83 @@ select:hover {
   z-index: auto;
 }
 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+.card-container.dashboard {
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  padding-left: .5rem;
+  padding-right: .5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.card-container.dashboard .card {
+  height: auto;
+  width: 12rem;
+  border-width: 1px;
+  border-color: #8795a1;
+  border-radius: .5rem;
+  background-color: #fff;
+  padding: 1rem;
+  padding-right: .75rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12), 0 2px 4px 0 rgba(0, 0, 0, .08);
+}
+
+.card-container.dashboard .card .card-header {
+  color: #606f7b;
+  font-weight: 600;
+  font-size: .75rem;
+  text-align: right;
+}
+
+.card-container.dashboard .card .card-body {
+  text-align: left;
+  color: #1f9d55;
+  font-weight: 200;
+  font-size: 1.25rem;
+  margin-top: .25rem;
+}
+
+.card-container .card {
+  height: 12rem;
+  background-color: #fff;
+  border-radius: .5rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+  border-width: 1px;
+  border-color: #b8c2cc;
+  padding: 1.25rem;
+}
+
+.card-container .card .card-header {
+  color: #8795a1;
+  font-weight: 400;
+  font-size: 1.125rem;
+  text-align: left;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-left: -1.25rem;
+  margin-bottom: .75rem;
+  border-left-width: 4px;
+  border-color: #faad63;
+  padding-left: 1rem;
+}
+
+.card-container .card .card-body {
+  text-align: left;
+  color: #b8c2cc;
+  font-weight: 400;
+}
+
 @media (min-width: 576px) {
   .sm\:list-reset {
     list-style: none;

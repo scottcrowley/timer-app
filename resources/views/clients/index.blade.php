@@ -1,24 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="w-3/4 lg:w-1/2">
-    <div class="rounded shadow">
-        <div class="flex font-medium text-lg text-primary-darker bg-primary p-3 rounded-t">
-            <div>Clients</div>
-            <div class="ml-auto">
-                <a href="{{ route('clients.create') }}" class="btn is-header-btn">Add New</a>
-            </div>
+<div class="w-full">
+    <div class="flex mb-6">
+        <div class="title flex-1">My Clients</div>
+        <div>
+            <a href="{{ route('clients.create') }}" class="btn is-primary">New Client</a>
         </div>
-        <div class="bg-white p-3 pb-6 rounded-b">
-            @forelse ($clients as $client)
-                <div class="py-2 px-1 border rounded mt-3 flex text-secondary-darker">
-                    <span>{{ $client->name }}</span>
-                    <a href="{{ route('clients.edit', $client->id) }}" class="ml-auto text-sm">edit</a>
+    </div>
+    <div class="card-container">
+        @forelse ($clients as $client)
+            <div class="w-1/3 px-3 pb-6">
+                <div class="card">
+                    <div class="card-header flex">
+                        <div class="flex-1">{{ $client->name }}</div>
+                        <div><a href="{{ route('clients.edit', $client->id) }}" class="btn-text is-primary is-small">edit</a></div>
+                    </div>
+                    <div class="card-body"></div>
                 </div>
-            @empty
-                <p>There are currently no Clients in the database.</p>
-            @endforelse
-        </div>
+            </div>
+        @empty
+            <p class="p-2 mt-4">You currently do not have any Clients. Please <a href="{{ route('clients.create') }}" class="btn-text is-primary">add</a> one.</p>
+        @endforelse
     </div>
 </div>
 @endsection

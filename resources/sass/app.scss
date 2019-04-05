@@ -8,3 +8,34 @@
 
 @tailwind utilities;
 
+.card-container {
+    @apply .flex .flex-wrap .-mx-3;
+
+    &.dashboard {
+        @apply .w-auto .flex-no-wrap .justify-start .flex-col .items-center .px-2 mx-0;
+
+        & .card {
+            @apply .h-auto .w-48 .border .border-secondary-dark .rounded-lg .bg-white .p-4 .pr-3 .mt-8 .shadow-md;
+
+            & .card-header {
+                @apply .text-secondary-darker .font-semibold .text-xs .text-right;
+            }
+
+            & .card-body {
+                @apply .text-left .text-green-dark .font-thin .text-xl .mt-1;
+            }
+        }
+    }
+
+    & .card {
+        @apply .h-48 .bg-white .rounded-lg .shadow .border .border-secondary p-5;
+
+        & .card-header {
+            @apply .text-secondary-dark .font-normal .text-lg .text-left py-4 -ml-5 mb-3 border-l-4 border-primary-light pl-4;
+        }
+
+        & .card-body {
+            @apply .text-left .text-secondary .font-normal;
+        }
+    }
+}

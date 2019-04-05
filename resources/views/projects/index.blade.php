@@ -1,24 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="w-3/4 lg:w-1/2">
-    <div class="rounded shadow">
-        <div class="flex font-medium text-lg text-primary-darker bg-primary p-3 rounded-t">
-            <div>Projects</div>
-            <div class="ml-auto">
-                <a href="{{ route('projects.create', request()->route('client')) }}" class="btn is-header-btn">Add New</a>
-            </div>
+<div class="w-full">
+    <div class="flex mb-6">
+        <div class="title flex-1">{{ $client->name .': Projects' }} </div>
+        <div>
+            <a href="{{ route('projects.create', $client->id) }}" class="btn is-primary">New Project</a>
         </div>
-        <div class="bg-white p-3 pb-6 rounded-b">
-            @forelse ($projects as $project)
-                <div class="py-2 px-1 border rounded mt-3 flex text-secondary-darker">
-                    <span>{{ $project->name }}</span>
-                    <a href="{{ route('projects.edit', $project->id) }}" class="ml-auto text-sm">edit</a>
+    </div>
+    <div class="card-container">
+        @forelse ($projects as $project)
+            <div class="w-1/3 px-3 pb-6">
+                <div class="card">
+                    <div class="card-header flex">
+                        <div class="flex-1">{{ $project->name }}</div>
+                        <div><a href="{{ route('projects.edit', $project->id) }}" class="btn-text is-primary is-small">edit</a></div>
+                    </div>
+                    <div class="card-body"></div>
                 </div>
-            @empty
-                <p>There are currently no Projects in the database.</p>
-            @endforelse
-        </div>
+            </div>
+        @empty
+            <p class="p-2 mt-4">You currently do not have any Projects for {{ $client->name }}. Please <a href="{{ route('projects.create', $client->id) }}" class="btn-text is-primary">add</a> one.</p>
+        @endforelse
     </div>
 </div>
 @endsection
