@@ -96,4 +96,48 @@ class TimerTest extends TestCase
         $this->post(route('timers.store', $timer['project_id']), $timer)
             ->assertSessionHasErrors('billed');
     }
+
+    /** @test */
+    public function it_can_calculate_the_total_raw_time_rounded_to_hundred_thousandths()
+    {
+        $timer = $this->createTimer('create', ['start' => now()->subMinutes(136), 'end' => now()]);
+
+        $this->assertEquals('2.26667', $timer->getTotalRawTime());
+    }
+
+    /** @test */
+    public function it_can_calculate_the_total_time_rounded_to_tenths()
+    {
+        $timer = $this->createTimer('create', ['start' => now()->subMinutes(137), 'end' => now()]);
+
+        $this->assertEquals('2.3', $timer->total_time);
+
+        $timer = $this->createTimer('create', ['start' => now()->subMinutes(177), 'end' => now()]);
+
+        $this->assertEquals('3.0', $timer->total_time);
+    }
+
+    /** @test */
+    public function it_can_get_its_billable_status()
+    {
+        $timer = $this->createTimer('create');
+
+        $this->assertTrue($timer->isBillable);
+
+        $timer->billable = false;
+
+        $this->assertFalse($timer->isBillable);
+    }
+
+    /** @test */
+    public function it_can_get_its_billed_status()
+    {
+        $timer = $this->createTimer('create');
+
+        $this->assertFalse($timer->isBilled);
+
+        $timer->billed = true;
+
+        $this->assertTrue($timer->isBilled);
+    }
 }

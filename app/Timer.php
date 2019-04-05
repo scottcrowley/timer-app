@@ -61,4 +61,55 @@ class Timer extends Model
     {
         return $this->project->client->user;
     }
+
+    /**
+     * gets the raw total time for the timer rounded to ten thousandths place
+     *
+     * @return float
+     */
+    public function getTotalRawTime()
+    {
+        return floatval(
+            round($this->start->diffInMinutes($this->end) / 60, 5)
+        );
+    }
+
+    /**
+     * gets the total time for the timer rounded to tenths place
+     *
+     * @return float
+     */
+    public function getTotalTimeAttribute()
+    {
+        return floatval(
+            $this->start->diffInHours($this->end) +
+            round(
+                (
+                    $this->start->diffInMinutes($this->end) -
+                    ($this->start->diffInHours($this->end) * 60)
+                ) / 60,
+                1
+            )
+        );
+    }
+
+    /**
+     * gets the billable status
+     *
+     * @return bool
+     */
+    public function getIsBillableAttribute()
+    {
+        return $this->billable;
+    }
+
+    /**
+     * gets the billed status
+     *
+     * @return bool
+     */
+    public function getIsBilledAttribute()
+    {
+        return $this->billed;
+    }
 }

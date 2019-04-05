@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Project;
 use Illuminate\Http\Request;
 
@@ -10,15 +11,16 @@ class ProjectsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Client $client)
     {
         $this->authorize('create', Project::class);
 
         $projects = auth()->user()->projects;
 
-        return view('projects.index', compact('projects'));
+        return view('projects.index', compact('projects', 'client'));
     }
 
     /**
