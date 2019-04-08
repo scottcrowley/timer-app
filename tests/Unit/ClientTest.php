@@ -45,6 +45,6 @@ class ClientTest extends TestCase
 
         create('App\Project', ['client_id' => $client->id], 5);
 
-        $this->assertCount(5, $client->projects);
+        $this->assertEquals(5, $client->project_count);
     }
 }

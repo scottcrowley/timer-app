@@ -26,13 +26,6 @@ class Project extends Model
         'active' => 'boolean'
     ];
 
-    // /**
-    //  * The relationships to always eager load
-    //  *
-    //  * @var array
-    //  */
-    // protected $with = ['client'];
-
     /**
      * Get the client belonging to the project.
      *

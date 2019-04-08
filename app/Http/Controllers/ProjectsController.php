@@ -26,13 +26,14 @@ class ProjectsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Client $client)
     {
         $this->authorize('create', Project::class);
 
-        return view('projects.create');
+        return view('projects.create', compact('client'));
     }
 
     /**

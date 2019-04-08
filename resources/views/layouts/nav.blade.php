@@ -1,4 +1,4 @@
-<nav class="bg-white h-auto shadow mb-8 px-6 lg:px-8">
+<nav class="bg-white h-auto shadow mb-8 px-6 lg:px-8 pb-10">
     <div class="mx-auto h-full flex flex-col">
         <div class="flex items-center pt-3">
             <div class="text-center sm:text-left md:ml-0">
@@ -20,6 +20,7 @@
                         <button slot="link" class="hidden md:block btn is-primary is-small" style="outline: none;">{{ Auth::user()->name }}</button>
 
                         <div slot="dropdown-items" class="text-right pr-3 pl-10">
+                            <a href="{{ route('clients.index') }}">Clients</a>
                             <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
@@ -30,17 +31,6 @@
                     </dropdown>
                 @endguest
             </div>
-        </div>
-        <div class="flex item-end justify-center mb-2 mt-2 md:mt-3">
-            @if (auth()->check())
-                <dropdown>
-                    <a slot="link" class="dropdown-toggle" href="#">Nav Item 1</a>
-                    <div slot="dropdown-items">
-                        <a href="">Sub Nav 1</a>
-                        <a href="">Sub Nav 2</a>
-                    </div>
-                </dropdown>
-            @endif
         </div>
     </div>
 </nav>
