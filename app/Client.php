@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    use ActiveStatus;
+    use ActiveStatus, TimerFunctions;
 
     /**
      * The attributes that are mass assignable.
@@ -37,6 +37,16 @@ class Client extends Model
     }
 
     /**
+     * Get the all timers associated with the client.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function timers()
+    {
+        return $this->hasManyThrough(Timer::class, Project::class);
+    }
+
+    /**
      * Get the user belonging to the client.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -44,5 +54,10 @@ class Client extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getProjectCountAttribute()
+    {
+        return $this->projects->count();
     }
 }

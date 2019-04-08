@@ -25,12 +25,12 @@ class Timer extends Model
         'end' => 'datetime',
     ];
 
-    /**
-     * The relationships to always eager load
-     *
-     * @var array
-     */
-    protected $with = ['project'];
+    // /**
+    //  * The relationships to always eager load
+    //  *
+    //  * @var array
+    //  */
+    // protected $with = ['project'];
 
     /**
      * Get the project belonging to the timer.
