@@ -26,22 +26,11 @@ class ClientTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_valid_user_id()
-    {
-        $this->signIn();
-
-        $client = makeRaw('App\Client', ['user_id' => 8]);
-
-        $this->post(route('clients.store'), $client)
-            ->assertSessionHasErrors('user_id');
-    }
-
-    /** @test */
     public function it_can_access_all_of_its_projects()
     {
         $this->signIn();
 
-        $client = create('App\Client', ['user_id' => auth()->id()]);
+        $client = create('App\Client');
 
         create('App\Project', ['client_id' => $client->id], 5);
 

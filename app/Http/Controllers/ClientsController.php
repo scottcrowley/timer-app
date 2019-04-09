@@ -14,7 +14,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Client::where('user_id', auth()->id())->get();
+        $clients = Client::where('user_id', auth()->id())->orderBy('name')->get();
 
         if (request()->expectsJson()) {
             return response($clients);
@@ -42,9 +42,10 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required',
-            'user_id' => 'exists:users,id'
+            'name' => 'required'
         ]);
+
+        $data['user_id'] = auth()->id();
 
         $client = Client::create($data);
 
