@@ -7,7 +7,7 @@
             {{ __('Reset Password') }}
         </div>
         <div class="bg-white p-3 rounded-b">
-            <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
+            <form method="POST" action="{{ route('password.request') }}">
                 {{ csrf_field() }}
 
                 <input type="hidden" name="token" value="{{ $token }}">

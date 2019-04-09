@@ -7,7 +7,7 @@
             {{ __('Login') }}
         </div>
         <div class="bg-white p-3 rounded-b">
-            <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login') }}">
                 {{ csrf_field() }}
 
                 <div class="field-group">

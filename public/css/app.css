@@ -625,39 +625,65 @@ button.burger:hover {
   border-color: #de751f;
 }
 
-.field-group {
+form .field-group {
   margin-top: .75rem;
 }
 
-.field-group:first-of-type {
+form .field-group:first-of-type {
   margin-top: 0;
 }
 
-.field-group label {
+form .field-group label {
   font-weight: 600;
   color: #606f7b;
   font-size: .875rem;
 }
 
-.field-group .field {
+form .field-group .field {
   display: flex;
   flex-direction: column;
   flex: 1 1 0%;
   margin-top: .5rem;
 }
 
-.field-group .field span.danger {
+form .field-group .field span.danger {
   font-size: .875rem;
   margin-top: .5rem;
 }
 
-.field-group input {
+form .field-group input {
   flex-grow: 1;
   height: 2rem;
   padding-left: .5rem;
   padding-right: .5rem;
   border-width: 1px;
   border-radius: .25rem;
+}
+
+form .field-group.btn-group {
+  margin-top: 1rem;
+  display: flex;
+}
+
+form .field-group.btn-group .field {
+  margin-top: 0;
+  margin-left: auto;
+  align-items: center;
+  flex-direction: row;
+  flex: none;
+}
+
+form.form-horizontal .field-group {
+  display: flex;
+  align-items: center;
+}
+
+form.form-horizontal .field-group label {
+  margin-right: .5rem;
+}
+
+form.form-horizontal .field-group .field {
+  margin-top: 0;
 }
 
 .success {

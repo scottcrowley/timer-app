@@ -18,7 +18,7 @@ class ProjectsController extends Controller
     {
         $this->authorize('create', Project::class);
 
-        $projects = auth()->user()->projects;
+        $projects = Project::where('client_id', $client->id)->orderBy('name')->get();
 
         return view('projects.index', compact('projects', 'client'));
     }

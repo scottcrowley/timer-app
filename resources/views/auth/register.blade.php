@@ -7,7 +7,7 @@
             Register
         </div>
         <div class="bg-white p-3 rounded-b">
-            <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
 
                 <div class="field-group">
