@@ -651,13 +651,21 @@ form .field-group .field span.danger {
   margin-top: .5rem;
 }
 
-form .field-group input {
-  flex-grow: 1;
+form .field-group input,
+form .field-group textarea {
+  flex: 1 1 0%;
   height: 2rem;
   padding-left: .5rem;
   padding-right: .5rem;
   border-width: 1px;
   border-radius: .25rem;
+  color: #606f7b;
+}
+
+form .field-group textarea {
+  flex: 1 1 0%;
+  height: auto;
+  padding: .5rem;
 }
 
 form .field-group.btn-group {
@@ -792,6 +800,7 @@ select {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+  height: 2rem;
   background-color: #fff;
   border-width: 1px;
   border-color: #dae1e7;

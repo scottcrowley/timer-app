@@ -40,13 +40,6 @@ class ProjectTest extends TestCase
 
         $this->post(route('projects.store', $project['client_id']), $project)
             ->assertStatus(404);
-
-        $project = $this->createProject('createRaw', [], null, auth()->user());
-
-        $project['client_id'] = 8;
-
-        $this->post(route('projects.update', $project['id']), $project)
-                ->assertSessionHasErrors('client_id');
     }
 
     /** @test */

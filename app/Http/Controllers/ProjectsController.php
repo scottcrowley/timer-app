@@ -46,13 +46,14 @@ class ProjectsController extends Controller
     {
         $this->authorize('create', Project::class);
 
-        $project = Project::create(
-            $request->validate([
-                'name' => 'required',
-                'description' => 'nullable',
-                'client_id' => 'exists:clients,id',
-            ])
-        );
+        $data = $request->validate([
+            'name' => 'required',
+            'description' => 'nullable',
+        ]);
+
+        $data['client_id'] = $request->route('client');
+
+        $project = Project::create($data);
 
         session()->flash('flash', ['message' => 'The Project added successfully!', 'level' => 'success']);
 
@@ -104,7 +105,6 @@ class ProjectsController extends Controller
             $request->validate([
                 'name' => 'required',
                 'description' => 'nullable',
-                'client_id' => 'exists:clients,id',
                 'active' => 'boolean'
             ])
         );
@@ -115,7 +115,7 @@ class ProjectsController extends Controller
             return response($response, 202);
         }
 
-        return redirect(route('projects.show', $project->id));
+        return redirect(route('projects.index', $project->client->id));
     }
 
     /**

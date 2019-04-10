@@ -140,7 +140,6 @@ class ProjectsTest extends TestCase
         $project = $this->createProject();
 
         $this->get(route('projects.edit', $project->id))
-            ->assertSee('Edit')
             ->assertSee(e($project->name));
     }
 
@@ -190,7 +189,7 @@ class ProjectsTest extends TestCase
         $project['name'] = 'Some new name';
 
         $this->post(route('projects.update', $project['id']), $project)
-            ->assertRedirect(route('projects.show', $project['id']));
+            ->assertRedirect(route('projects.index', $project['client_id']));
 
         $this->assertDatabaseHas('projects', ['name' => 'Some new name']);
     }

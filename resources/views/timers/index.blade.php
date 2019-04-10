@@ -5,9 +5,9 @@
     <div class="flex mb-6">
         <div class="title flex-1 font-thin">
             <a href="{{ route('clients.index') }}">My Clients</a> / 
-            <a href="{{ route('clients.show', $project->client->id) }}">{{ $project->client->name }}</a> / 
+            <a href="{{ route('clients.edit', $project->client->id) }}">{{ $project->client->name }}</a> / 
             <a href="{{ route('projects.index', $project->client->id) }}">Projects</a> / 
-            <a href="{{ route('projects.show', $project->id) }}">{{ $project->name }}</a> / 
+            <a href="{{ route('projects.edit', $project->id) }}">{{ $project->name }}</a> / 
             Timers
         </div>
         <div>
@@ -23,14 +23,17 @@
                             <a href="{{ route('timers.show', $timer->id) }}" class="text-secondary-dark">
                                 {{ number_format($timer->total_time, 1) }} Hours
                             </a>
-                            <p class="font-thin text-xs mt-2">{{ $timer->start->format('n/j/Y h:i:s a') . ' - ' . $timer->end->format('n/j/Y h:i:s a') }}</p>
+                            <p class="font-thin text-xs mt-2">
+                                {{ $timer->start->format('n/j/Y h:i a') . ' - ' . $timer->end->format('n/j/Y h:i a') }}
+                            </p>
                         </div>
-                        <div><a href="{{ route('timers.edit', $timer->id) }}" class="btn-text is-primary is-small">edit</a></div>
+                        <div>
+                            <a href="{{ route('timers.edit', $timer->id) }}" class="btn-text is-primary is-small">edit</a>
+                        </div>
                     </div>
                     <div class="card-body flex flex-col flex-1">
                         <p class="text-secondary flex-1">{{ $timer->description }}</p>
                         @if ($timer->billable)
-                            
                             @if ($timer->billed)
                                 <p class="text-success">Billed</p>
                             @else

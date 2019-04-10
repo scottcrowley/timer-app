@@ -18,10 +18,17 @@
                     <div class="field-group">
                         <label for="name" class="">Client Name</label>
                         <div class="field">
-                            <input id="name" type="text" class="{{ $errors->has('name') ? 'border-error-dark' : 'border-secondary-light' }}" name="name" value="{{ old('name') }}" required autofocus>
+                            <input 
+                                name="name" 
+                                type="text" 
+                                class="{{ $errors->has('name') ? 'border-error-dark' : 'border-secondary-light' }}" 
+                                value="{{ old('name') }}" 
+                                required autofocus>
                             {!! $errors->first('name', '<span class="text-error-dark text-sm mt-2">:message</span>') !!}
                         </div>
                     </div>
+
+                    @include('layouts._errors')
 
                     <div class="field-group btn-group">
                         <div class="field">

@@ -18,8 +18,12 @@
             }
         }
 
-        & input {
-            @apply .flex-grow .h-8 .px-2 .border .rounded
+        & input, textarea {
+            @apply .flex-1 .h-8 .px-2 .border .rounded .text-secondary-darker;
+        }
+
+        & textarea {
+            @apply .flex-1 .h-auto .p-2;
         }
 
         &.btn-group {

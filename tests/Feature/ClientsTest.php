@@ -113,7 +113,6 @@ class ClientsTest extends TestCase
         $client = create('App\Client', ['user_id' => auth()->id()]);
 
         $this->get(route('clients.edit', $client->id))
-            ->assertSee('Edit')
             ->assertSee(e($client->name));
     }
 
@@ -167,7 +166,7 @@ class ClientsTest extends TestCase
         $client['name'] = 'Some new name';
 
         $this->post(route('clients.update', $client['id']), $client)
-            ->assertRedirect(route('clients.show', $client['id']));
+            ->assertRedirect(route('clients.index'));
 
         $client = Client::find($client['id']);
 

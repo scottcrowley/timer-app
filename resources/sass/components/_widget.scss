@@ -1,7 +1,7 @@
 [v-cloak] { display: none; }
 
 select {
-    @apply .block .appearance-none .bg-white .border .border-secondary-light .text-secondary-darker .text-sm .py-1 .px-2 .pr-8 .rounded .leading-tight .shadow;
+    @apply .block .appearance-none .h-8 .bg-white .border .border-secondary-light .text-secondary-darker .text-sm .py-1 .px-2 .pr-8 .rounded .leading-tight .shadow;
     
     &:focus {
         @apply .outline-none .bg-white .border-secondary;

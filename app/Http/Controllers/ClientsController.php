@@ -108,7 +108,7 @@ class ClientsController extends Controller
             return response($response, 202);
         }
 
-        return redirect(route('clients.show', $client->id));
+        return redirect(route('clients.index'));
     }
 
     /**

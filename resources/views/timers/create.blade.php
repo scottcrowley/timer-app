@@ -12,13 +12,56 @@
             New Timer
         </div>
     </div>
-    <div class="w-3/4 lg:w-1/2">
+    <div class="w-3/4 lg:w-1/2 mx-auto">
         <div class="rounded shadow">
-            <div class="flex font-medium text-lg text-primary-darker bg-primary p-3 rounded-t">
-                <div>New Timer for {{ $project->client->name . ':' . $project->name }}</div>
-            </div>
-            <div class="bg-white p-3 pb-6 rounded-b">
+            <div class="bg-white px-6 py-8 rounded">
                 
+                <form method="POST" action="{{ route('timers.store', $project->id) }}">
+                    {{ csrf_field() }}
+    
+                    <div class="field-group">
+                        <label for="description">Description</label>
+                        <div class="field">
+                            <textarea name="description" id="description" rows="3"></textarea>
+                            {!! $errors->first('description', '<span class="text-error-dark text-sm mt-2">:message</span>') !!}
+                        </div>
+                    </div>
+                    
+                    <div class="field-group">
+                        <label for="start">Start Time</label>
+                        <div class="field">
+                            <input 
+                                name="start" 
+                                type="datetime" 
+                                class="{{ $errors->has('start') ? 'border-error-dark' : 'border-secondary-light' }}" 
+                                value="{{ old('start') }}" 
+                                required autofocus>
+                            {!! $errors->first('start', '<span class="text-error-dark text-sm mt-2">:message</span>') !!}
+                        </div>
+                    </div>
+                    
+                    <div class="field-group">
+                        <label for="end">End Time</label>
+                        <div class="field">
+                            <input 
+                                name="end" 
+                                type="datetime" 
+                                class="{{ $errors->has('end') ? 'border-error-dark' : 'border-secondary-light' }}" 
+                                value="{{ old('end') }}" 
+                                required autofocus>
+                            {!! $errors->first('end', '<span class="text-error-dark text-sm mt-2">:message</span>') !!}
+                        </div>
+                    </div>
+
+                    @include('layouts._errors')
+
+                    <div class="field-group btn-group">
+                        <div class="field">
+                            <a href="{{ route('timers.index', $project->id) }}" class="mr-3">Cancel</a>
+                            <button type="submit" class="btn is-primary">Add Timer</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
