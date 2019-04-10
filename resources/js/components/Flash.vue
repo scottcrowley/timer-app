@@ -1,6 +1,7 @@
 <template>
-    <div :class="classes"
-         style="right: 25px; top: 25px;"
+    <div
+        class="notification-box" 
+        :class="classes"
          role="alert"
          v-show="show"
          v-text="body">
@@ -21,7 +22,7 @@
 
         computed: {
             classes() {
-                let defaults = ['fixed', 'p-4', 'border'];
+                let defaults = [];
 
                 defaults.push(this.level);
 
