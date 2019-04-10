@@ -39,3 +39,11 @@
         }
     }
 }
+
+form .field-group .field .date-time-picker .field {
+    @apply .flex-row;
+}
+
+.date-time-picker {
+    @apply .flex;
+}

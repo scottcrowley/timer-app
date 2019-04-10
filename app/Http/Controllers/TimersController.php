@@ -18,7 +18,7 @@ class TimersController extends Controller
     {
         $this->authorize('create', Timer::class);
 
-        $timers = Timer::where('project_id', $project->id)->orderByRaw('billable DESC, billed DESC, end DESC')->get();
+        $timers = Timer::where('project_id', $project->id)->latest('end')->get();
 
         return view('timers.index', compact('timers', 'project'));
     }
@@ -120,7 +120,7 @@ class TimersController extends Controller
             return response($timer, 202);
         }
 
-        return redirect(route('timers.show', $timer->id));
+        return redirect(route('timers.index', $timer->project_id));
     }
 
     /**

@@ -625,6 +625,21 @@ button.burger:hover {
   border-color: #de751f;
 }
 
+.notification-box {
+  border-width: 1px;
+  position: fixed;
+  width: 100%;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1.125rem;
+  top: 0;
+  left: 0;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
 form .field-group {
   margin-top: .75rem;
 }
@@ -8150,6 +8165,14 @@ select:hover {
   text-align: left;
   color: #b8c2cc;
   font-weight: 400;
+}
+
+form .field-group .field .date-time-picker .field {
+  flex-direction: row;
+}
+
+.date-time-picker {
+  display: flex;
 }
 
 @media (min-width: 576px) {
