@@ -144,7 +144,7 @@ class TimersTest extends TestCase
         $timer->description = 'Some new description';
 
         $this->post(route('timers.update', $timer->id), $timer->toArray())
-            ->assertRedirect(route('timers.show', $timer->id));
+            ->assertRedirect(route('timers.index', $timer->project_id));
 
         $this->assertDatabaseHas('timers', ['description' => 'Some new description']);
     }

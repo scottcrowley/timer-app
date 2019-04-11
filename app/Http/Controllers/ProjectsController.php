@@ -130,7 +130,7 @@ class ProjectsController extends Controller
 
         $project->delete();
 
-        session()->flash('flash', 'The Project was deleted successfully!');
+        session()->flash('flash', ['message' => 'The Project deleted successfully!', 'level' => 'success']);
 
         if (request()->wantsJson()) {
             return response([], 204);

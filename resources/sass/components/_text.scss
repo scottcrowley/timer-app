@@ -20,6 +20,12 @@
             & span.danger {
                 @apply .text-sm .mt-2;
             }
+
+            & .date-time-picker {
+                & .field {
+                    @apply .flex-row;
+                }
+            }
         }
 
         & input, textarea {
@@ -35,6 +41,10 @@
             
             & .field {
                 @apply .mt-0 .ml-auto .items-center .flex-row .flex-none;
+
+                & a {
+                    @apply .cursor-pointer;
+                }
             }
         }
     }

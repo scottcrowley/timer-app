@@ -13,29 +13,7 @@
             <div class="bg-white px-6 py-8 rounded">
                 
                 <form class="form-horizontal" method="POST" action="{{ route('clients.store') }}">
-                    {{ csrf_field() }}
-    
-                    <div class="field-group">
-                        <label for="name" class="">Client Name</label>
-                        <div class="field">
-                            <input 
-                                name="name" 
-                                type="text" 
-                                class="{{ $errors->has('name') ? 'border-error-dark' : 'border-secondary-light' }}" 
-                                value="{{ old('name') }}" 
-                                required autofocus>
-                            {!! $errors->first('name', '<span class="text-error-dark text-sm mt-2">:message</span>') !!}
-                        </div>
-                    </div>
-
-                    @include('layouts._errors')
-
-                    <div class="field-group btn-group">
-                        <div class="field">
-                            <a href="{{ route('clients.index') }}" class="mr-3">Cancel</a>
-                            <button type="submit" class="btn is-primary">Add Client</button>
-                        </div>
-                    </div>
+                    @include('clients._form', ['client' => new \App\Client(), 'buttonText' => 'Add'])
                 </form>
             </div>
         </div>

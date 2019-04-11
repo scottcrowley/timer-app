@@ -26,6 +26,7 @@ Route::group([
     Route::get('/{client}', 'ClientsController@show')->name('clients.show');
     Route::get('/{client}/edit', 'ClientsController@edit')->name('clients.edit');
     Route::post('/{client}/edit', 'ClientsController@update')->name('clients.update');
+    Route::get('/{client}/delete', 'ClientsController@destroy');
     Route::delete('/{client}', 'ClientsController@destroy')->name('clients.delete');
     Route::get('/{client}/projects/', 'ProjectsController@index')->name('projects.index');
     Route::post('/{client}/projects/', 'ProjectsController@store')->name('projects.store');
@@ -40,6 +41,7 @@ Route::group([
     Route::delete('/{project}', 'ProjectsController@destroy')->name('projects.delete');
     Route::get('/{project}/edit', 'ProjectsController@edit')->name('projects.edit');
     Route::post('/{project}/edit', 'ProjectsController@update')->name('projects.update');
+    Route::get('/{project}/delete', 'ProjectsController@destroy');
     Route::get('/{project}/timers', 'TimersController@index')->name('timers.index');
     Route::post('/{project}/timers', 'TimersController@store')->name('timers.store');
     Route::get('/{project}/timers/create', 'TimersController@create')->name('timers.create');
@@ -53,4 +55,5 @@ Route::group([
     Route::delete('/{timer}', 'TimersController@destroy')->name('timers.delete');
     Route::get('/{timer}/edit', 'TimersController@edit')->name('timers.edit');
     Route::post('/{timer}/edit', 'TimersController@update')->name('timers.update');
+    Route::get('/{timer}/delete', 'TimersController@destroy');
 });

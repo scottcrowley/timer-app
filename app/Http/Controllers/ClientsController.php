@@ -123,7 +123,7 @@ class ClientsController extends Controller
 
         $client->delete();
 
-        session()->flash('flash', 'The Client was deleted successfully!');
+        session()->flash('flash', ['message' => 'The Client deleted successfully!', 'level' => 'success']);
 
         if (request()->wantsJson()) {
             return response([], 204);

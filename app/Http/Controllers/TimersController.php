@@ -135,7 +135,7 @@ class TimersController extends Controller
 
         $timer->delete();
 
-        session()->flash('flash', 'The Timer was deleted successfully!');
+        session()->flash('flash', ['message' => 'The Timer deleted successfully!', 'level' => 'success']);
 
         if (request()->wantsJson()) {
             return response([], 204);
