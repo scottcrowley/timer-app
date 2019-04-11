@@ -11,16 +11,24 @@
 <div class="field-group">
     <label for="start">Start Time</label>
     <div class="field">
-        <date-time name="start" value="{{ old('start', $timer->start) }}"></date-time>
-        {!! $errors->first('start', '<span class="text-error-dark text-sm mt-2">:message</span>') !!}
+        <date-time 
+            name="start" 
+            value="{{ old('start', $timer->start) }}"
+            error="{{ $errors->has('start') ? true : false }}" 
+            error-message="{{ $errors->first('start') }}">
+        </date-time>
     </div>
 </div>
 
 <div class="field-group">
     <label for="end">End Time</label>
     <div class="field">
-        <date-time name="end" value="{{ old('end', $timer->end) }}"></date-time>
-        {!! $errors->first('end', '<span class="text-error-dark text-sm mt-2">:message</span>') !!}
+        <date-time 
+            name="end" 
+            value="{{ old('end', $timer->end) }}" 
+            error="{{ $errors->has('end') ? true : false }}" 
+            error-message="{{ $errors->first('end') }}">
+        </date-time>
     </div>
 </div>
 
@@ -63,7 +71,13 @@
 @include('layouts._errors')
 
 <div class="field-group btn-group">
-    <div class="field">
+    <div class="field w-full justify-end">
+        @if ($buttonText == 'Update')
+            <delete-confirm-button label="Delete" :data-set="{{ $timer }}" classes="" path="/timers">
+                <div slot="title">Are You Sure?</div>  
+                Are you sure you want to delete this Timer? This action is not undoable.
+            </delete-confirm-button>
+        @endif
         <a href="{{ ($buttonText == 'Add') ? route('timers.index', $project->id) : route('timers.index', $timer->project_id) }}" class="mr-3">Cancel</a>
         <button type="submit" class="btn is-primary">{{ $buttonText }} Timer</button>
     </div>
