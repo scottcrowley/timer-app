@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Filters\ProjectFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -54,5 +55,17 @@ class Project extends Model
     public function getUser()
     {
         return $this->client->user;
+    }
+
+    /**
+     * Apply all relevant project filters.
+     *
+     * @param  Builder       $query
+     * @param  ProjectFilters $filters
+     * @return Builder
+     */
+    public function scopeFilter($query, ProjectFilters $filters)
+    {
+        return $filters->apply($query);
     }
 }

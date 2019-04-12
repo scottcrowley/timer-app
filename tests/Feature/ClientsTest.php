@@ -207,4 +207,24 @@ class ClientsTest extends TestCase
         $this->assertDatabaseMissing('projects', ['id' => $timer->project->id]);
         $this->assertDatabaseMissing('timers', ['id' => $timer->id]);
     }
+
+    /** @test */
+    public function an_authenticated_user_can_filter_their_clients_by_active_status()
+    {
+        $this->signIn();
+
+        $activeClients = create('App\Client', ['user_id' => auth()->id()], 2);
+
+        $inactiveClients = create('App\Client', ['user_id' => auth()->id(), 'active' => false]);
+
+        $this->get(route('clients.index', ['active' => 1]))
+            ->assertSee(e($activeClients[0]->name))
+            ->assertSee(e($activeClients[1]->name))
+            ->assertDontSee(e($inactiveClients->name));
+
+        $this->get(route('clients.index', ['inactive' => 1]))
+            ->assertDontSee(e($activeClients[0]->name))
+            ->assertDontSee(e($activeClients[1]->name))
+            ->assertSee(e($inactiveClients->name));
+    }
 }

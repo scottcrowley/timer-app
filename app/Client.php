@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Filters\ClientFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
@@ -59,5 +60,17 @@ class Client extends Model
     public function getProjectCountAttribute()
     {
         return $this->projects->count();
+    }
+
+    /**
+     * Apply all relevant client filters.
+     *
+     * @param  Builder       $query
+     * @param  ClientFilters $filters
+     * @return Builder
+     */
+    public function scopeFilter($query, ClientFilters $filters)
+    {
+        return $filters->apply($query);
     }
 }

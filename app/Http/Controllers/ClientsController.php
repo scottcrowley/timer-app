@@ -4,17 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use Illuminate\Http\Request;
+use App\Filters\ClientFilters;
 
 class ClientsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param \App\Filters\ClientFilters $filters
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ClientFilters $filters)
     {
-        $clients = Client::where('user_id', auth()->id())->orderBy('name')->get();
+        $clients = Client::where('user_id', auth()->id())
+            ->orderBy('name')
+            ->filter($filters)
+            ->get();
 
         if (request()->expectsJson()) {
             return response($clients);

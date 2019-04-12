@@ -19,7 +19,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function createProject($action = 'create', $attributes = [], $times = null, $user = null, $client = null)
     {
-        if (is_null($user)) {
+        if (is_null($user) && is_null($client)) {
             $this->signIn();
             $user = auth()->user();
         }

@@ -170,4 +170,38 @@ class TimersTest extends TestCase
 
         $this->assertDatabaseMissing('timers', ['id' => $timer->id]);
     }
+
+    /** @test */
+    public function an_authenticated_user_can_filter_their_timers_projects_by_billable_status()
+    {
+        $project = $this->createProject();
+
+        $billableTimers = $this->createTimer('create', [], 2, null, null, $project);
+        $nonBillableTimers = $this->createTimer('create', ['billable' => false], 1, null, null, $project);
+        $billedTimers = $this->createTimer('create', ['billed' => true], 1, null, null, $project);
+
+        $this->get(route('timers.index', ['project_id' => $project->id, 'billable' => 1]))
+            ->assertSee(e($billableTimers[0]->description))
+            ->assertSee(e($billableTimers[1]->description))
+            ->assertSee(e($billedTimers[0]->description))
+            ->assertDontSee(e($nonBillableTimers[0]->description));
+
+        $this->get(route('timers.index', ['project_id' => $project->id, 'nonbillable' => 1]))
+            ->assertDontSee(e($billableTimers[0]->description))
+            ->assertDontSee(e($billableTimers[1]->description))
+            ->assertDontSee(e($billedTimers[0]->description))
+            ->assertSee(e($nonBillableTimers[0]->description));
+
+        $this->get(route('timers.index', ['project_id' => $project->id, 'billed' => 1]))
+                ->assertDontSee(e($billableTimers[0]->description))
+                ->assertDontSee(e($billableTimers[1]->description))
+                ->assertSee(e($billedTimers[0]->description))
+                ->assertDontSee(e($nonBillableTimers[0]->description));
+
+        $this->get(route('timers.index', ['project_id' => $project->id, 'notbilled' => 1]))
+                ->assertSee(e($billableTimers[0]->description))
+                ->assertSee(e($billableTimers[1]->description))
+                ->assertDontSee(e($billedTimers[0]->description))
+                ->assertDontSee(e($nonBillableTimers[0]->description));
+    }
 }

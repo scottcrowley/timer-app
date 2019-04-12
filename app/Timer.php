@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Filters\TimerFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Timer extends Model
@@ -111,5 +112,17 @@ class Timer extends Model
     public function getIsBilledAttribute()
     {
         return $this->billed;
+    }
+
+    /**
+     * Apply all relevant project filters.
+     *
+     * @param  Builder       $query
+     * @param  ProjectFilters $filters
+     * @return Builder
+     */
+    public function scopeFilter($query, TimerFilters $filters)
+    {
+        return $filters->apply($query);
     }
 }

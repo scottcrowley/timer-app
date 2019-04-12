@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Timer;
 use App\Project;
 use Illuminate\Http\Request;
+use App\Filters\TimerFilters;
 
 class TimersController extends Controller
 {
@@ -12,13 +13,14 @@ class TimersController extends Controller
      * Display a listing of the resource.
      *
      * @param  \App\Project  $project
+     * @param  \App\Filters\TimerFilters  $filters
      * @return \Illuminate\Http\Response
      */
-    public function index(Project $project)
+    public function index(Project $project, TimerFilters $filters)
     {
         $this->authorize('create', Timer::class);
 
-        $timers = Timer::where('project_id', $project->id)->latest('end')->get();
+        $timers = Timer::where('project_id', $project->id)->latest('end')->filter($filters)->get();
 
         return view('timers.index', compact('timers', 'project'));
     }

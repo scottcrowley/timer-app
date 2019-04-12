@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Project;
 use Illuminate\Http\Request;
+use App\Filters\ProjectFilters;
 
 class ProjectsController extends Controller
 {
@@ -12,13 +13,14 @@ class ProjectsController extends Controller
      * Display a listing of the resource.
      *
      * @param  \App\Client  $client
+     * @param  \App\Filters\ProjectFilters  $filters
      * @return \Illuminate\Http\Response
      */
-    public function index(Client $client)
+    public function index(Client $client, ProjectFilters $filters)
     {
         $this->authorize('create', Project::class);
 
-        $projects = Project::where('client_id', $client->id)->orderBy('name')->get();
+        $projects = Project::where('client_id', $client->id)->orderBy('name')->filter($filters)->get();
 
         return view('projects.index', compact('projects', 'client'));
     }
