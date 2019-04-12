@@ -36,6 +36,22 @@
 
         & .card-body {
             @apply .text-left .text-secondary .font-normal;
+
+            & .card-detail {
+                @apply .flex .justify-center .items-center w-full;
+
+                & div {
+                    @apply .text-center .px-4 .border-l .border-secondary-light .text-sm;
+
+                    &:first-of-type {
+                        @apply .border-none;
+                    }
+
+                    & h1, h2, h3 {
+                        @apply .text-secondary-dark .font-thin;
+                    }
+                }
+            }
         }
     }
 }

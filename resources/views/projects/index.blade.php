@@ -29,14 +29,18 @@
                     </div>
                     <div class="card-body flex flex-col flex-1">
                         <p class="text-secondary flex-1">{{ $project->description }}</p>
-                        <p>
-                            <span class="font-semibold">{{ $project->all_billable_time }}</span> 
-                            billable {{ Str::plural('hour', $project->all_billable_time) }}
-                        </p>
-                        <p>
-                            <span class="font-semibold">{{ $project->all_non_billable_time }}</span> 
-                            non-billable {{ Str::plural('hour', $project->all_non_billable_time) }}
-                        </p>
+                        <div class="card-detail">
+                            <div class="w-1/2">
+                                <h3>{{ $project->all_billable_time }}</h3> 
+                                <span>billable {{ Str::plural('hour', $project->all_billable_time) }}
+                                </span>
+                            </div>
+                            <div class="w-1/2">
+                                <h3>{{ $project->all_non_billable_time }}</h3> 
+                                <span>non-billable {{ Str::plural('hour', $project->all_non_billable_time) }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
