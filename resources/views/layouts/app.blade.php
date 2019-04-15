@@ -17,7 +17,7 @@
     <div id="app" v-cloak>
         @include('layouts.nav')
 
-        <div class="container flex mx-auto justify-center pb-24">
+        <div class="container flex px-3 sm:px-0 mx-auto justify-center pb-24">
             @yield('content')
         </div>
 

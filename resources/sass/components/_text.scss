@@ -111,11 +111,11 @@ ul {
 }
 
 p {
-    @apply .font-sans .text-base .text-secondary-dark;
+    @apply .font-sans .text-sm .text-secondary-dark;
 }
 
 .title {
-    @apply .text-lg .text-secondary-darker .mb-2;
+    @apply .text-sm .text-secondary-darker .mb-2;
 }
 
 a {
@@ -139,5 +139,26 @@ a {
         & p {
             @apply .text-secondary-darkest;
         }
+    }
+}
+
+// media specific declarations
+@screen sm {
+    .title {
+        @apply .text-base;
+    }
+
+    p {
+        @apply .text-base;
+    }
+}
+
+@screen md {
+
+}
+
+@screen lg {
+    .title {
+        @apply .text-lg;
     }
 }

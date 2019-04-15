@@ -59,3 +59,15 @@
 .date-time-picker {
     @apply .flex .flex-col;
 }
+
+.switch {
+    @apply .border .rounded-full .border-secondary-light .flex .items-center .cursor-pointer .w-8 .justify-start;
+
+    & span {
+        @apply .rounded-full .border .w-4 .h-4 .border-secondary-light .shadow-inner .bg-white .shadow .select-none;
+    }
+
+    &.switch-active {
+        @apply .bg-green .justify-end;
+    }
+}
