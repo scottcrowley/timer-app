@@ -16,6 +16,8 @@
     </div>
     @if ($timers->count())
         <filter-panel 
+            label="{{ Str::plural('Timer', $timers->count()) }}"
+            item-count="{{ $timers->count() }}"
             base-url="{{ request()->url() }}"
             :request-object="{{ json_encode(request()->all()) }}" 
             :filters="{

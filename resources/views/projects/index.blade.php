@@ -14,6 +14,8 @@
     </div>
     @if ($projects->count())
         <filter-panel 
+            label="{{ Str::plural('Project', $projects->count()) }}"
+            item-count="{{ $projects->count() }}"
             base-url="{{ request()->url() }}"
             :request-object="{{ json_encode(request()->all()) }}" 
             :filters="{

@@ -1,6 +1,9 @@
 <template>
     <div>
-        <a class="btn-text tracking-wide font-normal text-sm sm:text-base lg:text-lg is-primary" @click.prevent="toggleFilters">Filters</a>
+        <div class="flex flex-row">
+            <a class="btn-text tracking-wide font-normal text-sm sm:text-base lg:text-lg is-primary" @click.prevent="toggleFilters">Filters</a>
+            <p class="ml-auto text-sm font-thin">Showing <span class="font-semibold" v-text="itemCount"></span> <span v-text="label"></span></p>
+        </div>
         <div class="flex flex-col lg:flex-row mt-3">
             <div>
                 <div v-show="showFilters" class="bg-white py-6 px-3 mb-3 lg:mb-0 lg:mr-3 rounded-lg">
@@ -27,7 +30,7 @@
 
 <script>
     export default {
-        props: ['baseUrl', 'requestObject', 'filters'],
+        props: ['label', 'baseUrl', 'requestObject', 'filters', 'itemCount'],
 
         data() {
             return {

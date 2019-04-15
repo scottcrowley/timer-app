@@ -10,6 +10,8 @@
     </div>
     @if ($clients->count())
         <filter-panel 
+            label="{{ Str::plural('Client', $clients->count()) }}"
+            item-count="{{ $clients->count() }}"
             base-url="{{ request()->url() }}"
             :request-object="{{ json_encode(request()->all()) }}" 
             :filters="{
