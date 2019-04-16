@@ -8,12 +8,14 @@
             <a href="{{ route('clients.create') }}" class="btn is-primary is-small md:is-normal">New Client</a>
         </div>
     </div>
-    @if ($clients->count())
+    @if ($clients->count() || session()->has('filters.clients'))
         <filter-panel 
             label="{{ Str::plural('Client', $clients->count()) }}"
             item-count="{{ $clients->count() }}"
             base-url="{{ request()->url() }}"
             :request-object="{{ json_encode(request()->all()) }}" 
+            :session-filters="{{ json_encode(session()->get('filters.clients')) }}"
+            end-point="clients" 
             :filters="{
                 active: {
                     label: 'Active Clients Only',
@@ -25,7 +27,7 @@
                 }
             }">
             <div slot="content" class="card-container">
-                @foreach ($clients as $client)
+                @forelse ($clients as $client)
                     <div class="w-full md:w-1/2 lg:w-1/3 px-3 pb-6">
                         <div class="card flex flex-col">
                             <div class="card-header flex">
@@ -63,7 +65,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p class="p-2 mt-4 mx-auto">
+                        There are no Clients matching your filtering options.
+                    </p>
+                @endforelse
             </div>
         </filter-panel>
     @else

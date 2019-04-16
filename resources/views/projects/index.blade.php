@@ -12,12 +12,14 @@
             <a href="{{ route('projects.create', $client->id) }}" class="btn is-primary is-small md:is-normal">New Project</a>
         </div>
     </div>
-    @if ($projects->count())
+    @if ($projects->count() || session()->has('filters.projects'))
         <filter-panel 
             label="{{ Str::plural('Project', $projects->count()) }}"
             item-count="{{ $projects->count() }}"
             base-url="{{ request()->url() }}"
             :request-object="{{ json_encode(request()->all()) }}" 
+            :session-filters="{{ json_encode(session()->get('filters.projects.' . $client->id)) }}"
+            end-point="projects/{{ $client->id }}" 
             :filters="{
                 active: {
                     label: 'Active Projects Only',
@@ -29,7 +31,7 @@
                 }
             }">
             <div slot="content" class="card-container">
-                @foreach ($projects as $project)
+                @forelse ($projects as $project)
                     <div class="w-full md:w-1/2 lg:w-1/3 px-3 pb-6">
                         <div class="card flex flex-col" style="height: 14rem;">
                             <div class="card-header flex">
@@ -60,7 +62,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p class="p-2 mt-4 mx-auto">
+                        There are no Projects matching your filtering options.
+                    </p>
+                @endforelse
             </div>
         </filter-panel>
     @else

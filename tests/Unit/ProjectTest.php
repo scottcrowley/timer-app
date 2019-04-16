@@ -109,10 +109,76 @@ class ProjectTest extends TestCase
     {
         $project = $this->createProject('create');
 
-        $billedTimers = $this->createTimer('create', ['billed' => true], 2, null, null, $project);
+        $this->createTimer('create', ['billed' => true], 2, null, null, $project);
 
-        $nonBilledTimers = $this->createTimer('create', [], 3, null, null, $project);
+        $this->createTimer('create', [], 3, null, null, $project);
 
         $this->assertCount(3, $project->non_billed_timers);
+    }
+
+    /** @test */
+    public function it_can_remember_any_applied_filters_for_a_specific_client()
+    {
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+        $otherClient = create('App\Client', ['user_id' => auth()->id()]);
+
+        $activeProject = $this->createProject('create', [], null, null, $client);
+        $inactiveProject = $this->createProject('create', ['active' => false], null, null, $client);
+
+        $otherActiveProject = $this->createProject('create', [], null, null, $otherClient);
+        $otherInactiveProject = $this->createProject('create', ['active' => false], null, null, $otherClient);
+
+        $this->get(route('projects.index', $client->id))
+            ->assertSee(e($activeProject->name))
+            ->assertSee(e($inactiveProject->name));
+
+        $this->json('post', route('sessions.projects.store', $client->id), [
+            'active' => 1
+        ])
+            ->assertStatus(201)
+            ->assertSessionHas('filters.projects.' . $client->id, ['active' => 1]);
+
+        $this->get(route('projects.index', $client->id))
+            ->assertSee(e($activeProject->name))
+            ->assertDontSee(e($inactiveProject->name));
+
+        $this->get(route('projects.index', $otherClient->id))
+            ->assertSee(e($otherActiveProject->name))
+            ->assertSee(e($otherInactiveProject->name));
+
+        $this->json('post', route('sessions.projects.store', $client->id), ['inactive' => 1])
+            ->assertStatus(201)
+            ->assertSessionHas('filters.projects.' . $client->id, ['inactive' => 1]);
+
+        $this->get(route('projects.index', $client->id))
+            ->assertDontSee(e($activeProject->name))
+            ->assertSee(e($inactiveProject->name));
+    }
+
+    /** @test */
+    public function it_can_clear_the_filters_from_the_session()
+    {
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+
+        $activeProject = $this->createProject('create', [], null, null, $client);
+        $inactiveProject = $this->createProject('create', ['active' => false], null, null, $client);
+
+        $this->json('post', route('sessions.projects.store', $client->id), ['active' => 1]);
+
+        $this->get(route('projects.index', $client->id))
+            ->assertSee(e($activeProject->name))
+            ->assertDontSee(e($inactiveProject->name));
+
+        $this->json('delete', route('sessions.projects.delete', $client->id))
+            ->assertStatus(204)
+            ->assertSessionMissing('filters.projects.' . $client->id);
+
+        $this->get(route('projects.index', $client->id))
+            ->assertSee(e($activeProject->name))
+            ->assertSee(e($inactiveProject->name));
     }
 }

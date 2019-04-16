@@ -140,4 +140,108 @@ class TimerTest extends TestCase
 
         $this->assertTrue($timer->isBilled);
     }
+
+    /** @test */
+    public function it_can_remember_any_applied_billable_filters_for_a_specific_project()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+
+        $project = $this->createProject('create', [], null, null, $client);
+
+        $billableTimer = $this->createTimer('create', [], null, null, null, $project);
+        $nonbillableTimer = $this->createTimer('create', ['billable' => false], null, null, null, $project);
+
+        $this->get(route('timers.index', $project->id))
+            ->assertSee($billableTimer->description)
+            ->assertSee($nonbillableTimer->description);
+
+        $this->json('post', route('sessions.timers.store', $project->id), [
+            'billable' => 1
+        ])
+            ->assertStatus(201)
+            ->assertSessionHas('filters.timers.' . $project->id, ['billable' => 1]);
+
+        $this->get(route('timers.index', $project->id))
+            ->assertSee($billableTimer->description)
+            ->assertDontSee($nonbillableTimer->description);
+
+        $this->json('post', route('sessions.timers.store', $project->id), ['nonbillable' => 1])
+            ->assertStatus(201)
+            ->assertSessionHas('filters.timers.' . $project->id, ['nonbillable' => 1]);
+
+        $this->get(route('timers.index', $project->id))
+            ->assertDontSee($billableTimer->description)
+            ->assertSee($nonbillableTimer->description);
+    }
+
+    /** @test */
+    public function it_can_remember_any_applied_billed_filters()
+    {
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+
+        $project = $this->createProject('create', [], null, null, $client);
+
+        $billedTimer = $this->createTimer('create', ['billed' => true], null, null, null, $project);
+        $notbilledTimer = $this->createTimer('create', [], null, null, null, $project);
+
+        $this->get(route('timers.index', $project->id))
+            ->assertSee($billedTimer->description)
+            ->assertSee($notbilledTimer->description);
+
+        $this->json('post', route('sessions.timers.store', $project->id), [
+            'billed' => 1
+        ])
+            ->assertStatus(201)
+            ->assertSessionHas('filters.timers.' . $project->id, ['billed' => 1]);
+
+        $this->get(route('timers.index', $project->id))
+            ->assertSee($billedTimer->description)
+            ->assertDontSee($notbilledTimer->description);
+
+        $this->json('post', route('sessions.timers.store', $project->id), ['notbilled' => 1])
+            ->assertStatus(201)
+            ->assertSessionHas('filters.timers.' . $project->id, ['notbilled' => 1]);
+
+        $this->get(route('timers.index', $project->id))
+            ->assertDontSee($billedTimer->description)
+            ->assertSee($notbilledTimer->description);
+    }
+
+    /** @test */
+    public function it_can_clear_the_filters_from_the_session()
+    {
+        $this->signIn();
+
+        $client = create('App\Client', ['user_id' => auth()->id()]);
+
+        $project = $this->createProject('create', [], null, null, $client);
+
+        $billableTimer = $this->createTimer('create', [], null, null, null, $project);
+        $nonbillableTimer = $this->createTimer('create', ['billable' => false], null, null, null, $project);
+        $billedTimer = $this->createTimer('create', ['billed' => true], null, null, null, $project);
+        $notbilledTimer = $this->createTimer('create', [], null, null, null, $project);
+
+        $this->json('post', route('sessions.timers.store', $project->id), ['billable' => 1, 'notbilled' => 1]);
+
+        $this->get(route('timers.index', $project->id))
+            ->assertSee($billableTimer->description)
+            ->assertSee($notbilledTimer->description)
+            ->assertDontSee($billedTimer->description)
+            ->assertDontSee($nonbillableTimer->description);
+
+        $this->json('delete', route('sessions.timers.delete', $project->id))
+            ->assertStatus(204)
+            ->assertSessionMissing('filters.timers.' . $project->id);
+
+        $this->get(route('timers.index', $project->id))
+            ->assertSee($billableTimer->description)
+            ->assertSee($notbilledTimer->description)
+            ->assertSee($billedTimer->description)
+            ->assertSee($nonbillableTimer->description);
+    }
 }

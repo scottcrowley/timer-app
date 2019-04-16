@@ -30,13 +30,14 @@
 
 <script>
     export default {
-        props: ['label', 'baseUrl', 'requestObject', 'filters', 'itemCount'],
+        props: ['label', 'baseUrl', 'sessionFilters', 'requestObject', 'endPoint', 'filters', 'itemCount'],
 
         data() {
             return {
                 showFilters: false,
                 activeFilters: [],
                 filteredUrl: '',
+                filteredParams: '',
             }
         },
 
@@ -46,7 +47,9 @@
 
         methods: {
             checkActiveFilters() {
-                Object.keys(this.requestObject).forEach(
+                let filtersToCheck = (this.sessionFilters !== null) ? this.sessionFilters : this.requestObject;
+
+                Object.keys(filtersToCheck).forEach(
                     filter => {
                         if (this.filters[filter]) {
                             this.activateSwitch(document.getElementById(filter));
@@ -93,7 +96,7 @@
             applyFilters() {
                 this.generateFilteredUrl();
 
-                window.location.href = this.filteredUrl;
+                this.updateSessionFilters('post', this.filteredUrl);
             },
             generateFilteredUrl() {
                 let params = '';
@@ -103,10 +106,17 @@
                         params += filter + '=1';
                     }
                 );
-                this.filteredUrl = this.baseUrl + '?' + params;
+                this.filteredParams = '?' + params;
+                this.filteredUrl = this.baseUrl + this.filteredParams;
+            },
+            updateSessionFilters(action, url) {
+                axios[action]('/sessions/' + this.endPoint + this.filteredParams)
+                    .then(response => {
+                        window.location.href = url;
+                    });
             },
             resetFilters() {
-                window.location.href = this.baseUrl;
+                this.updateSessionFilters('delete', this.baseUrl);
             }
         }
     }

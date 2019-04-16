@@ -9,7 +9,24 @@ class TimerFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['billable', 'nonbillable', 'billed', 'notbilled'];
+    public $filters = ['billable', 'nonbillable', 'billed', 'notbilled'];
+
+    /**
+     * The key being used in the session to store the filters
+     *
+     * @var string
+     */
+    public $sessionKey = 'timers';
+
+    /**
+     * construct the session key name
+     *
+     * @return void
+     */
+    protected function getSessionKeyName()
+    {
+        return 'filters.' . $this->sessionKey . '.' . request()->route('project')->id;
+    }
 
     /**
      * Filter the query by timers that are billable

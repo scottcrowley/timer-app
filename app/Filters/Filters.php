@@ -3,6 +3,7 @@
 namespace App\Filters;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 abstract class Filters
 {
@@ -55,12 +56,17 @@ abstract class Filters
     }
 
     /**
-     * Fetch all relevant filters from the request.
+     * Fetch all relevant filters from the request or session.
      *
      * @return array
      */
     public function getFilters()
     {
+        $key = $this->getSessionKeyName();
+
+        if (session()->has($key)) {
+            return Arr::only(session()->get($key), $this->filters);
+        }
         return array_filter($this->request->only($this->filters));
     }
 }

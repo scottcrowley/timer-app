@@ -14,12 +14,14 @@
             <a href="{{ route('timers.create', $project->id) }}" class="btn is-primary is-small md:is-normal">New Timer</a>
         </div>
     </div>
-    @if ($timers->count())
+    @if ($timers->count() || session()->has('filters.timers'))
         <filter-panel 
             label="{{ Str::plural('Timer', $timers->count()) }}"
             item-count="{{ $timers->count() }}"
             base-url="{{ request()->url() }}"
             :request-object="{{ json_encode(request()->all()) }}" 
+            :session-filters="{{ json_encode(session()->get('filters.timers.' . $project->id)) }}"
+            end-point="timers/{{ $project->id }}" 
             :filters="{
                 billable: {
                     label: 'Billable Timers Only',
@@ -39,7 +41,7 @@
                 }
             }">
             <div slot="content" class="card-container">
-                @foreach ($timers as $timer)
+                @forelse ($timers as $timer)
                     <div class="w-full md:w-1/2 lg:w-1/3 px-3 pb-6">
                         <div class="card flex flex-col" style="height: 14rem;">
                             <div class="card-header flex">
@@ -69,7 +71,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p class="p-2 mt-4 mx-auto">
+                        There are no Timers matching your filtering options.
+                    </p>
+                @endforelse
             </div>
         </filter-panel>
     @else

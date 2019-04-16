@@ -17,6 +17,18 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group([
+    'prefix' => 'sessions',
+    'middleware' => 'auth'
+], function () {
+    Route::post('/clients', 'ClientsSessionController@store')->name('sessions.clients.store');
+    Route::delete('/clients', 'ClientsSessionController@destroy')->name('sessions.clients.delete');
+    Route::post('/projects/{client}', 'ProjectsSessionController@store')->name('sessions.projects.store');
+    Route::delete('/projects/{client}', 'ProjectsSessionController@destroy')->name('sessions.projects.delete');
+    Route::post('/timers/{project}', 'TimersSessionController@store')->name('sessions.timers.store');
+    Route::delete('/timers/{project}', 'TimersSessionController@destroy')->name('sessions.timers.delete');
+});
+
+Route::group([
     'prefix' => 'clients',
     'middleware' => 'auth'
 ], function () {

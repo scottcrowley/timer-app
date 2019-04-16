@@ -9,7 +9,24 @@ class ClientFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['active', 'inactive'];
+    public $filters = ['active', 'inactive'];
+
+    /**
+     * The key being used in the session to store the filters
+     *
+     * @var string
+     */
+    public $sessionKey = 'clients';
+
+    /**
+     * construct the session key name
+     *
+     * @return void
+     */
+    protected function getSessionKeyName()
+    {
+        return 'filters.' . $this->sessionKey;
+    }
 
     /**
      * Filter the query by clients that are active

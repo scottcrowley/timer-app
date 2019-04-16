@@ -9,7 +9,24 @@ class ProjectFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['active', 'inactive'];
+    public $filters = ['active', 'inactive'];
+
+    /**
+     * The key being used in the session to store the filters
+     *
+     * @var string
+     */
+    public $sessionKey = 'projects';
+
+    /**
+     * construct the session key name
+     *
+     * @return void
+     */
+    protected function getSessionKeyName()
+    {
+        return 'filters.' . $this->sessionKey . '.' . request()->route('client')->id;
+    }
 
     /**
      * Filter the query by projects that are active
