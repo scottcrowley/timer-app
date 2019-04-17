@@ -37,8 +37,8 @@
     <div class="field">
         <div class="relative">
             <select name="billable" class="w-full">
-                <option value="0" {{ (! old('billable', $timer->billable)) ? 'selected' : '' }}>No</option>
                 <option value="1" {{ (old('billable', $timer->billable) || ($buttonText == 'Add' && old('billable') === null)) ? 'selected' : '' }}>Yes</option>
+                <option value="0" {{ (! old('billable', $timer->billable)) ? 'selected' : '' }}>No</option>
             </select>
             <div class="select-menu-icon">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
