@@ -201,8 +201,8 @@ class ClientsTest extends TestCase
     public function all_related_projects_and_timers_are_removed_when_a_client_is_deleted()
     {
         $timer = $this->createTimer();
-
-        $this->delete(route('clients.delete', $timer->getClient()->id));
+        $timer->load('project');
+        $this->delete(route('clients.delete', $timer->client->id));
 
         $this->assertDatabaseMissing('projects', ['id' => $timer->project->id]);
         $this->assertDatabaseMissing('timers', ['id' => $timer->id]);

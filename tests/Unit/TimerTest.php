@@ -22,7 +22,7 @@ class TimerTest extends TestCase
     {
         $timer = $this->createTimer();
 
-        $this->assertInstanceOf(\App\Client::class, $timer->getClient());
+        $this->assertInstanceOf(\App\Client::class, $timer->client);
     }
 
     /** @test */
@@ -30,7 +30,7 @@ class TimerTest extends TestCase
     {
         $timer = $this->createTimer();
 
-        $this->assertInstanceOf(\App\User::class, $timer->getUser());
+        $this->assertInstanceOf(\App\User::class, $timer->user);
     }
 
     /** @test */

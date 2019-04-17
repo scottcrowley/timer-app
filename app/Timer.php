@@ -44,23 +44,23 @@ class Timer extends Model
     }
 
     /**
-     * Gets the Client associated with the Timer Project
+     * Get the Client associated with the Timer
      *
-     * @return App\Client
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
      */
-    public function getClient()
+    public function client()
     {
-        return $this->project->client;
+        return $this->hasOneThrough(Client::class, Project::class, 'client_id', 'id');
     }
 
     /**
-     * Gets the User associated with the Timer Project Client
+     * Get the User associated with the Timer
      *
-     * @return App\User
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
      */
-    public function getUser()
+    public function user()
     {
-        return $this->project->client->user;
+        return $this->hasOneThrough(User::class, Client::class, 'user_id', 'id');
     }
 
     /**
@@ -112,7 +112,7 @@ class Timer extends Model
     }
 
     /**
-     * Apply all relevant project filters.
+     * Apply all relevant timer filters.
      *
      * @param  Builder       $query
      * @param  ProjectFilters $filters
