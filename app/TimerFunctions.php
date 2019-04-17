@@ -11,13 +11,7 @@ trait TimerFunctions
      */
     public function getAllTimeAttribute()
     {
-        $time = 0;
-
-        foreach ($this->timers as $timer) {
-            $time += $timer->getTotalRawTime();
-        }
-
-        return round($time, 1);
+        return $this->calculateRawTime($this->timers);
     }
 
     /**
@@ -27,19 +21,14 @@ trait TimerFunctions
      */
     public function getAllBillableTimeAttribute()
     {
-        $time = 0;
-        $timers = $this->timers()
-            ->where('billable', true)
-            ->whereHas('project', function ($query) {
-                $query->where('active', true);
-            })
-            ->get();
-
-        foreach ($timers as $timer) {
-            $time += $timer->getTotalRawTime();
-        }
-
-        return round($time, 1);
+        return $this->calculateRawTime(
+            $this->timers()
+                ->billable()
+                ->whereHas('project', function ($query) {
+                    $query->where('active', true);
+                })
+                ->get()
+        );
     }
 
     /**
@@ -49,33 +38,43 @@ trait TimerFunctions
      */
     public function getAllNonBillableTimeAttribute()
     {
-        $time = 0;
-        $timers = $this->timers->where('billable', false);
-
-        foreach ($timers as $timer) {
-            $time += $timer->getTotalRawTime();
-        }
-
-        return round($time, 1);
+        return $this->calculateRawTime(
+            $this->timers()->nonBillable()->get()
+        );
     }
 
     /**
      * gets all timers that are billable and have been billed
      *
-     * @return collection
+     * @return Collection
      */
     public function getBilledTimersAttribute()
     {
-        return $this->timers->where('billable', true)->where('billed', true);
+        return $this->timers()->billable()->billed()->get();
     }
 
     /**
      * gets all timers that are billable and have not been billed
      *
-     * @return collection
+     * @return Collection
      */
     public function getNonBilledTimersAttribute()
     {
-        return $this->timers->where('billable', true)->where('billed', false);
+        return $this->timers()->billable()->notBilled()->get();
+    }
+
+    /**
+     * calculateRawTime
+     *
+     * @param Collection $timers
+     * @return float
+     */
+    protected function calculateRawTime($timers)
+    {
+        $time = 0;
+        foreach ($timers as $timer) {
+            $time += $timer->getTotalRawTime();
+        }
+        return round($time, 1);
     }
 }

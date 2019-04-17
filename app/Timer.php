@@ -122,4 +122,48 @@ class Timer extends Model
     {
         return $filters->apply($query);
     }
+
+    /**
+     * All billable timers
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeBillable($query)
+    {
+        return $query->where('billable', true);
+    }
+
+    /**
+     * All nonbillable timers
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNonBillable($query)
+    {
+        return $query->where('billable', false);
+    }
+
+    /**
+     * All billed timers
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeBilled($query)
+    {
+        return $query->where('billed', true);
+    }
+
+    /**
+     * All not billed timers
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNotBilled($query)
+    {
+        return $query->where('billed', false);
+    }
 }

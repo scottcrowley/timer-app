@@ -74,7 +74,7 @@ class Client extends Model
      */
     public function getActiveProjectCountAttribute()
     {
-        return $this->projects()->where('active', true)->count();
+        return $this->projects()->active()->count();
     }
 
     /**

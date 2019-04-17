@@ -69,6 +69,12 @@ class Project extends Model
         return $filters->apply($query);
     }
 
+    /**
+     * Active Projects
+     *
+     * @param Builder $query
+     * @return Builder
+     */
     public function scopeActive($query)
     {
         return $query->where('active', true);

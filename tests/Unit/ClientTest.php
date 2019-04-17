@@ -38,6 +38,19 @@ class ClientTest extends TestCase
     }
 
     /** @test */
+    public function it_can_access_all_of_its_active_projects()
+    {
+        $this->signIn();
+
+        $client = create('App\Client');
+
+        create('App\Project', ['client_id' => $client->id], 5);
+        create('App\Project', ['client_id' => $client->id, 'active' => false]);
+
+        $this->assertEquals(5, $client->active_project_count);
+    }
+
+    /** @test */
     public function it_can_remember_any_applied_filters()
     {
         $this->signIn();
