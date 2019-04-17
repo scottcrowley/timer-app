@@ -44,9 +44,9 @@
                             <div class="card-body flex flex-1">
                                 <div class="card-detail">
                                     <div class="w-1/3">
-                                        <h2>{{ $client->project_count }}</h2> 
+                                        <h2>{{ $client->active_project_count }}</h2> 
                                         <span>active<br/>
-                                            {{ Str::plural('project', $client->project_count) }}
+                                            {{ Str::plural('project', $client->active_project_count) }}
                                         </span>
                                     </div>
                                     <div class="w-1/3">

@@ -21,14 +21,19 @@ trait TimerFunctions
     }
 
     /**
-     * gets the total time for all Billable timers
+     * gets the total time for all Billable timers that are active
      *
      * @return float
      */
     public function getAllBillableTimeAttribute()
     {
         $time = 0;
-        $timers = $this->timers->where('billable', true);
+        $timers = $this->timers()
+            ->where('billable', true)
+            ->whereHas('project', function ($query) {
+                $query->where('active', true);
+            })
+            ->get();
 
         foreach ($timers as $timer) {
             $time += $timer->getTotalRawTime();

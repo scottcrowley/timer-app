@@ -57,9 +57,24 @@ class Client extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * gets the count of all projects for this client
+     *
+     * @return void
+     */
     public function getProjectCountAttribute()
     {
         return $this->projects->count();
+    }
+
+    /**
+     * gets the count of only active projects for this client
+     *
+     * @return void
+     */
+    public function getActiveProjectCountAttribute()
+    {
+        return $this->projects()->where('active', true)->count();
     }
 
     /**

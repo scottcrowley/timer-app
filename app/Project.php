@@ -68,4 +68,9 @@ class Project extends Model
     {
         return $filters->apply($query);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
 }

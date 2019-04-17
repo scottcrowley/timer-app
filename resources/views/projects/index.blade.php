@@ -12,7 +12,7 @@
             <a href="{{ route('projects.create', $client->id) }}" class="btn is-primary is-small md:is-normal">New Project</a>
         </div>
     </div>
-    @if ($projects->count() || session()->has('filters.projects'))
+    @if ($projects->count() || session()->has('filters.projects.' . $client->id))
         <filter-panel 
             label="{{ Str::plural('Project', $projects->count()) }}"
             item-count="{{ $projects->count() }}"

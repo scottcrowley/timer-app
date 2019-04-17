@@ -84,13 +84,10 @@ class Timer extends Model
     {
         return floatval(
             $this->start->diffInHours($this->end) +
-            round(
-                (
-                    $this->start->diffInMinutes($this->end) -
-                    ($this->start->diffInHours($this->end) * 60)
-                ) / 60,
-                1
-            )
+                round(
+                    ($this->start->diffInMinutes($this->end) - ($this->start->diffInHours($this->end) * 60)) / 60,
+                    1
+                )
         );
     }
 

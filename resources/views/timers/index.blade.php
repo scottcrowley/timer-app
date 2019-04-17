@@ -14,7 +14,7 @@
             <a href="{{ route('timers.create', $project->id) }}" class="btn is-primary is-small md:is-normal">New Timer</a>
         </div>
     </div>
-    @if ($timers->count() || session()->has('filters.timers'))
+    @if ($timers->count() || session()->has('filters.timers.' . $project->id))
         <filter-panel 
             label="{{ Str::plural('Timer', $timers->count()) }}"
             item-count="{{ $timers->count() }}"
