@@ -34,6 +34,13 @@ class Timer extends Model
     // protected $with = ['project'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['total_time', 'total_billable_time', 'total_non_billable_time', 'total_billed_time'];
+
+    /**
      * Get the project belonging to the timer.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -76,19 +83,67 @@ class Timer extends Model
     }
 
     /**
-     * gets the total time for the timer rounded to tenths place
+     * gets the total time for the timer
      *
      * @return float
      */
     public function getTotalTimeAttribute()
     {
-        return floatval(
-            $this->start->diffInHours($this->end) +
-                round(
-                    ($this->start->diffInMinutes($this->end) - ($this->start->diffInHours($this->end) * 60)) / 60,
-                    1
-                )
-        );
+        return floatval($this->calculateTime());
+    }
+
+    /**
+     * gets the total time for the timer if it is billable
+     *
+     * @return float
+     */
+    public function getTotalBillableTimeAttribute()
+    {
+        return ($this->billable) ? floatval($this->calculateTime()) : 0;
+    }
+
+    /**
+     * gets the total time for the timer if it is non-billable
+     *
+     * @return float
+     */
+    public function getTotalNonBillableTimeAttribute()
+    {
+        return (! $this->billable) ? floatval($this->calculateTime()) : 0;
+    }
+
+    /**
+     * gets the total time for the timer if it is billable and billed
+     *
+     * @return float
+     */
+    public function getTotalBilledTimeAttribute()
+    {
+        return ($this->billable && $this->billed) ? floatval($this->calculateTime()) : 0;
+    }
+
+    /**
+     * gets the total time for the timer if it is billable and not yet billed
+     *
+     * @return float
+     */
+    public function getTotalNotBilledTimeAttribute()
+    {
+        return ($this->billable && ! $this->billed) ? floatval($this->calculateTime()) : 0;
+    }
+
+    /**
+     * calculate to total time for the timer rounded to tenths place
+     *
+     * @return float
+     */
+    protected function calculateTime() 
+    {
+        return $this->start->diffInHours($this->end) +
+            round(
+                ($this->start->diffInMinutes($this->end) - ($this->start->diffInHours($this->end) * 60)) / 60,
+                1
+            );
     }
 
     /**

@@ -39,8 +39,30 @@ trait TimerFunctions
     public function getAllNonBillableTimeAttribute()
     {
         return $this->calculateRawTime(
-            $this->timers()->nonBillable()->get()
+            $this->non_billable_timers
         );
+    }
+
+    /**
+     * gets the total time for all Non-Billable timers
+     *
+     * @return float
+     */
+    public function getAllBilledTimeAttribute()
+    {
+        return $this->calculateRawTime(
+            $this->billed_timers
+        );
+    }
+
+    /**
+     * gets all timers that are non billable
+     *
+     * @return Collection
+     */
+    public function getNonBillableTimersAttribute()
+    {
+        return $this->timers()->nonBillable()->get();
     }
 
     /**

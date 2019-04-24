@@ -14,70 +14,90 @@
             <a href="{{ route('timers.create', $project->id) }}" class="btn is-primary is-small md:is-normal">New Timer</a>
         </div>
     </div>
-    @if ($timers->count() || session()->has('filters.timers.' . $project->id))
-        <filter-panel 
-            label="{{ Str::plural('Timer', $timers->count()) }}"
-            item-count="{{ $timers->count() }}"
-            base-url="{{ request()->url() }}"
-            :request-object="{{ json_encode(request()->all()) }}" 
-            :session-filters="{{ json_encode(session()->get('filters.timers.' . $project->id)) }}"
-            end-point="timers/{{ $project->id }}" 
-            :filters="{
-                billable: {
-                    label: 'Billable Timers Only',
-                    inverse: 'nonbillable'
-                },
-                nonbillable: {
-                    label: 'Non-Billable Timers Only',
-                    inverse: ['billable', 'billed', 'notbilled']
-                },
-                billed: {
-                    label: 'Billed Timers Only',
-                    inverse: ['notbilled', 'nonbillable']
-                },
-                notbilled: {
-                    label: 'Not Billed Timers Only',
-                    inverse: ['billed', 'nonbillable']
-                }
-            }">
-            <div slot="content" class="card-container">
-                @forelse ($timers as $timer)
-                    <div class="w-full md:w-1/2 lg:w-1/3 px-3 pb-6">
-                        <div class="card flex flex-col" style="height: 14rem;">
-                            <div class="card-header flex">
-                                <div class="flex-1 text-sm sm:text-lg">
-                                    <a href="{{ route('timers.show', $timer->id) }}" class="text-secondary-dark">
-                                        {{ number_format($timer->total_time, 1) }} Hours
-                                    </a>
-                                    <p class="font-thin text-xs mt-2">
-                                        {{ $timer->start->format('n/j/Y h:i a') . ' - ' . $timer->end->format('n/j/Y h:i a') }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <a href="{{ route('timers.edit', $timer->id) }}" class="btn-text is-primary is-small">edit</a>
-                                </div>
-                            </div>
-                            <div class="card-body flex flex-col flex-1">
-                                <p class="text-secondary flex-1">{{ $timer->description }}</p>
-                                @if ($timer->billable)
-                                    @if ($timer->billed)
-                                        <p class="text-success">Billed</p>
-                                    @else
-                                        <p class="text-blue">Not Yet Billed</p>
-                                    @endif
-                                @else
-                                    <p class="text-blue">Non-Billable</p>
-                                @endif
-                            </div>
-                        </div>
+    {{-- <div class="card-container justify-center" style="margin: 0;">
+        <div class="w-2/5 card" style="height: auto;">
+            <div class="card-body">
+                <div class="card-detail">
+                    <div class="w-1/4">
+                        <h3>{{ $timers->sum('total_billable_time') }}</h3> 
+                        <span>billable<br/>
+                            {{ Str::plural('hour', $timers->sum('total_billable_time')) }}
+                        </span>
                     </div>
-                @empty
-                    <p class="p-2 mt-4 mx-auto">
-                        There are no Timers matching your filtering options.
-                    </p>
-                @endforelse
+                    <div class="w-1/4">
+                        <h3>{{ $timers->sum('total_non_billable_time') }}</h3> 
+                        <span>non-billable<br/>
+                            {{ Str::plural('hour', $timers->sum('total_non_billable_time')) }}
+                        </span>
+                    </div>
+                    <div class="w-1/4">
+                        <h3>{{ $timers->sum('total_billed_time') }}</h3> 
+                        <span>{{ Str::plural('hour', $timers->sum('total_billed_time')) }}<br/>
+                            billed
+                        </span>
+                    </div>
+                    <div class="w-1/4">
+                        <h3>{{ $timers->sum('total_not_billed_time') }}</h3> 
+                        <span>{{ Str::plural('hour', $timers->sum('total_not_billed_time')) }}<br/>
+                            to be billed
+                        </span>
+                    </div>
+                </div>
             </div>
-        </filter-panel>
+        </div>
+    </div> --}}
+    @if ($timers->count() || session()->has('filters.timers.' . $project->id))
+        <timers inline-template>
+            <div>
+                <timer-details 
+                    billable="{{ $timers->sum('total_billable_time') }}"
+                    billable-label="{{ Str::plural('hour', $timers->sum('total_billable_time')) }}"
+                    non-billable="{{ $timers->sum('total_non_billable_time') }}"
+                    non-billable-label="{{ Str::plural('hour', $timers->sum('total_non_billable_time')) }}"
+                    billed="{{ $timers->sum('total_billed_time') }}"
+                    billed-label="{{ Str::plural('hour', $timers->sum('total_billed_time')) }}"
+                    not-billed="{{ $timers->sum('total_not_billed_time') }}"
+                    not-billed-label="{{ Str::plural('hour', $timers->sum('total_not_billed_time')) }}"
+                    @updated="updateDetails"
+                ></timer-details>
+
+                <filter-panel 
+                    label="{{ Str::plural('Timer', $timers->count()) }}"
+                    item-count="{{ $timers->count() }}"
+                    base-url="{{ request()->url() }}"
+                    :request-object="{{ json_encode(request()->all()) }}" 
+                    :session-filters="{{ json_encode(session()->get('filters.timers.' . $project->id)) }}"
+                    end-point="timers/{{ $project->id }}" 
+                    :filters="{
+                        billable: {
+                            label: 'Billable Timers Only',
+                            inverse: 'nonbillable'
+                        },
+                        nonbillable: {
+                            label: 'Non-Billable Timers Only',
+                            inverse: ['billable', 'billed', 'notbilled']
+                        },
+                        billed: {
+                            label: 'Billed Timers Only',
+                            inverse: ['notbilled', 'nonbillable']
+                        },
+                        notbilled: {
+                            label: 'Not Billed Timers Only',
+                            inverse: ['billed', 'nonbillable']
+                        }
+                    }">
+                    <div slot="content" class="card-container">
+                        @forelse ($timers as $timer)
+                            <timer :timer="{{ $timer }}" :total-time="{{ number_format($timer->total_time, 1) }}" total-time-label="{{ Str::plural('Hour', $timer->total_time) }}"></timer>
+                        @empty
+                            <p class="p-2 mt-4 mx-auto">
+                                There are no Timers matching your filtering options.
+                            </p>
+                        @endforelse
+                    </div>
+                </filter-panel>
+            </div>
+        </timers>
     @else
         <p class="p-2 mt-4">
             You currently do not have any Timers for the {{ $project->name }} project. Please 

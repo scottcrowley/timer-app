@@ -12,7 +12,7 @@
 
     &.is-outlined {
         background: transparent;
-        @apply .border;
+        @apply .border .border-primary .text-secondary-darker;
     }
 
     &.is-small {

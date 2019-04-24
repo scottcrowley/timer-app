@@ -60,11 +60,11 @@ class TimersController extends Controller
 
         $timer = Timer::create($data);
 
-        session()->flash('flash', ['message' => 'The Timer added successfully!', 'level' => 'success']);
-
         if ($request->expectsJson()) {
             return response($timer, 201);
         }
+
+        session()->flash('flash', ['message' => 'The Timer added successfully!', 'level' => 'success']);
 
         return redirect(route('timers.index', $timer->project_id));
     }
@@ -115,13 +115,13 @@ class TimersController extends Controller
                 'billed' => 'required|boolean'
             ])
         );
-
-        session()->flash('flash', ['message' => 'The Timer updated successfully!', 'level' => 'success']);
-
+        
         if ($request->expectsJson()) {
             return response($timer, 202);
         }
-
+        
+        session()->flash('flash', ['message' => 'The Timer updated successfully!', 'level' => 'success']);
+        
         return redirect(route('timers.index', $timer->project_id));
     }
 
