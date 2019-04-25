@@ -40,19 +40,16 @@
                 data: this.dataSet
             }
         },
-
         methods: {
             close() {
                 this.showModal = false;
             },
-
             doAction(action) {
                 this.close();
                 if (action == 'delete') {
                     this.doDelete(); 
                 }
             },
-
             doDelete() {
                 location.assign(this.path + '/' + this.data.id + '/delete');
             }

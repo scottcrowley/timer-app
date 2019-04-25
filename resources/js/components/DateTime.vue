@@ -25,21 +25,18 @@
 
     export default {
         components: { VueCtkDateTimePicker },
-
         props: [
             'name', 
             'value', 
             'error',
             'errorMessage'
         ],
-
         data() {
             return {
                 dateValue: this.value,
                 hasError: this.error
             }
         },
-
         mounted() {
             this.setInputValue(this.dateValue);
 
@@ -47,7 +44,6 @@
                 this.addErrorClass();
             }
         },
-
         watch: {
             dateValue(value) {
                 this.setInputValue(value);
@@ -56,7 +52,6 @@
                 }
             }
         },
-
         methods: {
             setInputValue(value) {
                 this.$refs.dataInput.value = value;

@@ -4,26 +4,26 @@
             <div class="card-body">
                 <div class="card-detail">
                     <div class="w-1/4">
-                        <h3 v-text="billable"></h3> 
+                        <h3 v-text="billable.toFixed(1)"></h3> 
                         <span>billable<br/>
-                            <span v-text="billableLabel"></span>
+                            hours
                         </span>
                     </div>
                     <div class="w-1/4">
-                        <h3 v-text="nonBillable"></h3> 
+                        <h3 v-text="nonBillable.toFixed(1)"></h3> 
                         <span>non-billable<br/>
-                            <span v-text="nonBillableLabel"></span>
+                            hours
                         </span>
                     </div>
                     <div class="w-1/4">
-                        <h3 v-text="billed"></h3> 
-                        <span><span v-text="billedLabel"></span><br/>
+                        <h3 v-text="billed.toFixed(1)"></h3> 
+                        <span>hours<br/>
                             billed
                         </span>
                     </div>
                     <div class="w-1/4">
-                        <h3 v-text="notBilled"></h3> 
-                        <span><span v-text="notBilledLabel"></span><br/>
+                        <h3 v-text="notBilled.toFixed(1)"></h3> 
+                        <span>hours<br/>
                             to be billed
                         </span>
                     </div>
@@ -35,6 +35,11 @@
 
 <script>
     export default {
-        props: ['billable', 'billableLabel', 'nonBillable', 'nonBillableLabel', 'billed', 'billedLabel', 'notBilled', 'notBilledLabel'],
+        props: {
+            'billable' : Number, 
+            'nonBillable' : Number, 
+            'billed' : Number, 
+            'notBilled' : Number, 
+        }
     }
 </script>

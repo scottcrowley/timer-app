@@ -11,7 +11,6 @@
 <script>
     export default {
         props: ['message', 'baselevel'],
-
         data() {
             return {
                 body: this.message,
@@ -19,7 +18,6 @@
                 show: false
             }
         },
-
         computed: {
             classes() {
                 let defaults = [];
@@ -29,7 +27,6 @@
                 return defaults;
             }
         },
-
         created() {
             if (this.message) {
                 this.flash();
@@ -39,7 +36,6 @@
                 'flash', data => this.flash(data)
             );
         },
-
         methods: {
             flash(data) {
                 if (data) {
@@ -51,7 +47,6 @@
 
                 this.hide();
             },
-
             hide() {
                 setTimeout(() => {
                     this.show = false;

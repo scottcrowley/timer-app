@@ -17,20 +17,16 @@
                 open: false
             }
         },
-
         created() {
             window.addEventListener('click', this.close)
         },
-
         beforeDestroy() {
             window.removeEventListener('click', this.close)
         },
-
         methods: {
             toggle() {
                 this.open = ! this.open;
             },
-
             close(e) {
                 if (! this.$refs.dropdowncontainer.contains(e.target)) {
                     this.open = false;

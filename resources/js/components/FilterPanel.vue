@@ -30,8 +30,15 @@
 
 <script>
     export default {
-        props: ['label', 'baseUrl', 'sessionFilters', 'requestObject', 'endPoint', 'filters', 'itemCount'],
-
+        props: [
+            'label', 
+            'baseUrl', 
+            'sessionFilters', 
+            'requestObject', 
+            'endPoint', 
+            'filters', 
+            'itemCount'
+        ],
         data() {
             return {
                 showFilters: false,
@@ -40,11 +47,9 @@
                 filteredParams: '',
             }
         },
-
         mounted() {
             this.checkActiveFilters();
         },
-
         methods: {
             checkActiveFilters() {
                 let filtersToCheck = (this.sessionFilters !== null) ? this.sessionFilters : this.requestObject;
