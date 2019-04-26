@@ -28,7 +28,7 @@
             }">
             <div slot="content" class="card-container">
                 @forelse ($clients as $client)
-                    <div class="w-full md:w-1/2 lg:w-1/3 px-3 pb-6">
+                    <div class="w-full md:w-1/2 lg:w-1/3 px-2 pb-4">
                         <div class="card flex flex-col">
                             <div class="card-header flex">
                                 <div class="flex-1 text-sm sm:text-lg">

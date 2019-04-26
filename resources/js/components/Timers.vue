@@ -22,8 +22,8 @@
 </template>
 
 <script>
-    import FilterPanel from "../components/FilterPanel";
-    import Timer from "../components/Timer";
+    import FilterPanel from "./FilterPanel";
+    import Timer from "./Timer";
 
     export default {
         props: [
