@@ -8,7 +8,7 @@
             <a href="{{ route('clients.edit', $client->id) }}">{{ $client->name }}</a> / 
             Projects
         </div>
-        <div class="mt-1 ml-auto md:m-0">
+        <div class="mt-1 mx-auto md:m-0">
             <a href="{{ route('projects.create', $client->id) }}" class="btn is-primary is-small md:is-normal">New Project</a>
         </div>
     </div>

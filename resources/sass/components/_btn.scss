@@ -12,7 +12,17 @@
 
     &.is-outlined {
         background: transparent;
-        @apply .border .border-primary .text-secondary-darker;
+        @apply .border .border-secondary-dark .text-secondary-darker;
+        &:hover {
+            @apply .bg-secondary .text-secondary-darkest;
+        }
+
+        &.is-primary {
+            @apply .border-primary;
+            &:hover {
+                @apply .border-secondary-dark;
+            }
+        }
     }
 
     &.is-small {

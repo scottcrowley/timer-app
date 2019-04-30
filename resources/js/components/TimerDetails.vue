@@ -1,6 +1,6 @@
 <template>
-    <div class="card-container justify-center" style="margin: 0;">
-        <div class="w-2/5 card" style="height: auto;">
+    <div class="card-container justify-center mb-3" style="margin-left: 0; margin-right: 0;">
+        <div class="w-full md:w-2/3 lg:w-2/5 card" style="height: auto;">
             <div class="card-body">
                 <div class="card-detail">
                     <div class="w-1/4">

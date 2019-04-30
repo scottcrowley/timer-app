@@ -10,7 +10,7 @@
             <a href="{{ route('projects.edit', $project->id) }}">{{ $project->name }}</a> / 
             Timers
         </div>
-        <div class="mt-1 ml-auto md:m-0">
+        <div class="mt-1 mx-auto md:m-0">
             <a href="{{ route('timers.create', $project->id) }}" class="btn is-primary is-small md:is-normal">New Timer</a>
         </div>
     </div>

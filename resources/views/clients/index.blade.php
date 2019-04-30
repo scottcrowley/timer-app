@@ -4,7 +4,7 @@
 <div class="w-full">
     <div class="flex flex-col md:flex-row mb-6">
         <div class="title flex-1 font-thin">My Clients</div>
-        <div class="mt-1 ml-auto md:m-0">
+        <div class="mt-1 mx-auto md:m-0">
             <a href="{{ route('clients.create') }}" class="btn is-primary is-small md:is-normal">New Client</a>
         </div>
     </div>

@@ -15,10 +15,10 @@
                         <span v-text="filter.label" class="ml-2"></span>
                     </div>
                     <button 
-                        class="btn is-small ml-2 is-outlined" 
+                        class="btn is-small ml-2 is-outlined is-primary" 
                         @click.prevent="applyFilters" 
                         v-if="activeFilters.length">Apply</button>
-                    <button class="btn is-small ml-1 is-outlined" @click.prevent="resetFilters">Reset</button>
+                    <button class="btn is-small ml-1 is-outlined is-primary" @click.prevent="resetFilters">Reset</button>
                 </div>
             </div>
             <div class="flex-1">

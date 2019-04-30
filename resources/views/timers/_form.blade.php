@@ -73,12 +73,12 @@
 <div class="field-group btn-group">
     <div class="field w-full justify-end">
         @if ($buttonText == 'Update')
-            <delete-confirm-button label="Delete" :data-set="{{ $timer }}" classes="" path="/timers">
+            <delete-confirm-button label="Delete" :data-set="{{ $timer }}" classes="btn is-small is-outlined" path="/timers">
                 <div slot="title">Are You Sure?</div>  
                 Are you sure you want to delete this Timer? This action is not undoable.
             </delete-confirm-button>
         @endif
-        <a href="{{ ($buttonText == 'Add') ? route('timers.index', $project->id) : route('timers.index', $timer->project_id) }}" class="mr-3">Cancel</a>
+        <a href="{{ ($buttonText == 'Add') ? route('timers.index', $project->id) : route('timers.index', $timer->project_id) }}" class="mr-3 btn is-outlined">Cancel</a>
         <button type="submit" class="btn is-primary">{{ $buttonText }} Timer</button>
     </div>
 </div>
