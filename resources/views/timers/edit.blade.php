@@ -9,7 +9,7 @@
             <a href="{{ route('projects.index', $timer->project->client->id) }}">Projects</a> / 
             <a href="{{ route('projects.show', $timer->project->id) }}">{{ $timer->project->name }}</a> / 
             <a href="{{ route('timers.index', $timer->project->id) }}">Timers</a> / 
-            {{ $timer->description }}
+            {{ $timer->start->format('h:i a') . ' - ' . $timer->end->format('h:i a') }}
         </div>
     </div>
     <div class="w-full md:w-3/4 lg:w-1/2 mx-auto">
