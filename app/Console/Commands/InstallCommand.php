@@ -29,27 +29,22 @@ class InstallCommand extends Command
     public function handle()
     {
         $this->welcome();
-
         $this->createEnvFile();
 
         if (strlen(config('app.key')) === 0) {
             $this->call('key:generate');
-
             $this->line('~ Secret key properly generated.');
         }
 
         $credentials = $this->requestDatabaseCredentials();
-
         $this->updateEnvironmentFile($credentials);
 
         if ($this->confirm('Do you want to migrate the database?', false)) {
             $this->migrateDatabaseWithFreshCredentials($credentials);
-
             $this->line('~ Database successfully migrated.');
         }
 
         $this->call('cache:clear');
-
         $this->goodbye();
     }
 

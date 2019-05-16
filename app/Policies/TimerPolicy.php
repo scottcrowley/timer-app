@@ -20,9 +20,9 @@ class TimerPolicy
     public function create(User $user)
     {
         $requestProject = request()->route('project');
-        $project = ($requestProject instanceof Project) ? $requestProject : Project::findOrFail($requestProject);
+        $project = $requestProject instanceof Project ? $requestProject : Project::findOrFail($requestProject);
 
-        return ($project->client->user_id == $user->id);
+        return $project->client->user_id == $user->id;
     }
 
     /**
@@ -34,6 +34,6 @@ class TimerPolicy
      */
     public function update(User $user, Timer $timer)
     {
-        return ($timer->project->client->user_id == $user->id);
+        return $timer->project->client->user_id == $user->id;
     }
 }

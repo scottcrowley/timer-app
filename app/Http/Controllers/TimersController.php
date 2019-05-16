@@ -57,7 +57,6 @@ class TimersController extends Controller
         ]);
 
         $data['project_id'] = $request->route('project');
-
         $timer = Timer::create($data);
 
         if ($request->expectsJson()) {
@@ -65,7 +64,6 @@ class TimersController extends Controller
         }
 
         session()->flash('flash', ['message' => 'The Timer added successfully!', 'level' => 'success']);
-
         return redirect(route('timers.index', $timer->project_id));
     }
 

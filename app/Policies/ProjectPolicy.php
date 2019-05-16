@@ -20,9 +20,9 @@ class ProjectPolicy
     public function create(User $user)
     {
         $requestClient = request()->route('client');
-        $client = ($requestClient instanceof Client) ? $requestClient : Client::findOrFail($requestClient);
+        $client = $requestClient instanceof Client ? $requestClient : Client::findOrFail($requestClient);
 
-        return ($client->user_id == $user->id);
+        return $client->user_id == $user->id;
     }
 
     /**
@@ -34,6 +34,6 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        return ($project->client->user_id == $user->id);
+        return $project->client->user_id == $user->id;
     }
 }

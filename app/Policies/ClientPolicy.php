@@ -19,6 +19,6 @@ class ClientPolicy
      */
     public function update(User $user, Client $client)
     {
-        return ($client->user_id == $user->id);
+        return $client->user_id == $user->id;
     }
 }

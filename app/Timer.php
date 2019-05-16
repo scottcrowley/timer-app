@@ -40,15 +40,15 @@ class Timer extends Model
      * @var array
      */
     protected $appends = [
-        'total_time', 
-        'total_time_label', 
-        'total_billable_time', 
-        'total_billable_time_label', 
-        'total_non_billable_time', 
-        'total_non_billable_time_label', 
-        'total_billed_time', 
-        'total_billed_time_label', 
-        'total_not_billed_time', 
+        'total_time',
+        'total_time_label',
+        'total_billable_time',
+        'total_billable_time_label',
+        'total_non_billable_time',
+        'total_non_billable_time_label',
+        'total_billed_time',
+        'total_billed_time_label',
+        'total_not_billed_time',
         'total_not_billed_time_label'
     ];
 
@@ -109,7 +109,7 @@ class Timer extends Model
      *
      * @return string
      */
-    public function getTotalTimeLabelAttribute() 
+    public function getTotalTimeLabelAttribute()
     {
         return Str::plural('hour', $this->total_time);
     }
@@ -121,7 +121,7 @@ class Timer extends Model
      */
     public function getTotalBillableTimeAttribute()
     {
-        return ($this->billable) ? floatval($this->calculateTime()) : 0;
+        return $this->billable ? floatval($this->calculateTime()) : 0;
     }
 
     /**
@@ -129,7 +129,7 @@ class Timer extends Model
      *
      * @return string
      */
-    public function getTotalBillableTimeLabelAttribute() 
+    public function getTotalBillableTimeLabelAttribute()
     {
         return Str::plural('hour', $this->total_billable_time);
     }
@@ -141,7 +141,7 @@ class Timer extends Model
      */
     public function getTotalNonBillableTimeAttribute()
     {
-        return (! $this->billable) ? floatval($this->calculateTime()) : 0;
+        return ! $this->billable ? floatval($this->calculateTime()) : 0;
     }
 
     /**
@@ -149,7 +149,7 @@ class Timer extends Model
      *
      * @return string
      */
-    public function getTotalNonBillableTimeLabelAttribute() 
+    public function getTotalNonBillableTimeLabelAttribute()
     {
         return Str::plural('hour', $this->total_non_billable_time);
     }
@@ -161,7 +161,7 @@ class Timer extends Model
      */
     public function getTotalBilledTimeAttribute()
     {
-        return ($this->billable && $this->billed) ? floatval($this->calculateTime()) : 0;
+        return $this->billable && $this->billed ? floatval($this->calculateTime()) : 0;
     }
 
     /**
@@ -181,7 +181,7 @@ class Timer extends Model
      */
     public function getTotalNotBilledTimeAttribute()
     {
-        return ($this->billable && ! $this->billed) ? floatval($this->calculateTime()) : 0;
+        return $this->billable && ! $this->billed ? floatval($this->calculateTime()) : 0;
     }
 
     /**
@@ -199,7 +199,7 @@ class Timer extends Model
      *
      * @return float
      */
-    protected function calculateTime() 
+    protected function calculateTime()
     {
         return $this->start->diffInHours($this->end) +
             round(

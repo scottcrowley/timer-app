@@ -21,7 +21,7 @@ trait ActiveStatus
      */
     public function toggleActive()
     {
-        $response = ($this->active) ? $this->makeInactive() : $this->makeActive();
+        $this->active ? $this->makeInactive() : $this->makeActive();
 
         return ! $this->active;
     }

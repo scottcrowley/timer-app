@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Filters\ProjectFilters;
-use App\Client;
 
 class ProjectsSessionController extends Controller
 {
