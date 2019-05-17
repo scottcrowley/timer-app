@@ -46,9 +46,14 @@
 <div class="field-group btn-group">
     <div class="field w-full justify-end">
         @if ($buttonText == 'Update')
-            <delete-confirm-button label="Delete" :data-set="{{ $project }}" classes="btn is-small is-outlined" path="/projects">
-                <div slot="title">Are You Sure?</div>  
-                Are you sure you want to delete this Project? All associated Timers will also be deleted. This action is not undoable.
+            <delete-confirm-button 
+                label="Delete" 
+                :data-set="{{ $project }}" 
+                classes="btn is-outlined" 
+                path="/projects" 
+                message="Are you sure you want to delete this Project? This action is not undoable."
+                title="Are You Sure?"
+            >
             </delete-confirm-button>
         @endif
         <a href="{{ ($buttonText == 'Add') ? route('projects.index', $client->id) : route('projects.index', $project->client_id) }}" class="mr-3 btn is-outlined">Cancel</a>

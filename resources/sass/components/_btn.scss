@@ -1,5 +1,15 @@
-.btn {
-    @apply .bg-secondary .text-secondary-darkest .font-normal .text-sm .font-semibold .py-2 .px-4 .rounded;
+.swal-button {
+    &.swal-button--cancel, &.swal-button--confirm, &.swal-button--danger {
+        @apply .border-solid;
+
+        &:focus {
+            @apply .outline-none .shadow-none;
+        }
+    }
+}
+
+.btn, .swal-button {
+    @apply .bg-secondary .text-secondary-darkest .font-normal .text-sm .font-semibold .py-2 .px-4 .rounded .outline-none;
     cursor: pointer;
 
     &.is-primary {
@@ -10,7 +20,7 @@
         }
     }
 
-    &.is-outlined {
+    &.is-outlined, &.swal-button--cancel {
         background: transparent;
         @apply .border .border-secondary-dark .text-secondary-darker;
         &:hover {
@@ -39,6 +49,22 @@
 
     &.is-narrow {
         @apply .py-1 .px-2;
+    }
+
+    &.swal-button--confirm {
+        @apply .bg-success-light .text-white .border .border-solid .border-success;
+
+        &:hover {
+            @apply .bg-success .border .border-success-dark .border-solid .text-white;
+        }
+    }
+
+    &.swal-button--danger {
+        @apply .bg-error-light .text-white .border .border-solid .border-error;
+
+        &:hover {
+            @apply .bg-error .border .border-error-dark .border-solid .text-white;
+        }
     }
 }
 
