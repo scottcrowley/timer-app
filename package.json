@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "moment": "^2.24.0",
+        "sweetalert": "^2.1.2",
         "vue-ctk-date-time-picker": "^2.0.9"
     }
 }
