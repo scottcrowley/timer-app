@@ -24,7 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "moment": "^2.24.0",
+        "moment": "^2.29.4",
         "sweetalert": "^2.1.2",
         "vue-ctk-date-time-picker": "^2.1.1"
     }
